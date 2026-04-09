@@ -15,7 +15,7 @@ export class HomeComponent {
       visible: true,
       order: 1,
       data: {
-        title: 'Clínica de Obstetricia y Ginecología',
+        title: 'Clínica de Obstetricia y Ginecología ',
         subtitle: 'Cuidamos de ti y de tu bebé con la más alta tecnología y calidez humana.',
         ctaLabel: 'Agendar consulta',
         ctaRoute: '/contacto',
