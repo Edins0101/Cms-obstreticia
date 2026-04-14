@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { PageBlock } from '../models/block.model';
+import { PageBlock } from '../../core/models/block.model';
 import { HeroBlockComponent } from '../hero-block/hero-block.component';
 import { TextBlockComponent } from '../text-block/text-block.component';
 import { ImageBlockComponent } from '../image-block/image-block.component';
@@ -13,7 +13,7 @@ import { CtaBlockComponent } from '../cta-block/cta-block.component';
     TextBlockComponent,
     ImageBlockComponent,
     CardsGridComponent,
-    CtaBlockComponent
+    CtaBlockComponent,
   ],
   template: `
     @for (block of blocks(); track block.id) {
@@ -37,7 +37,7 @@ import { CtaBlockComponent } from '../cta-block/cta-block.component';
         }
       }
     }
-  `
+  `,
 })
 export class BlockRendererComponent {
   blocks = input.required<PageBlock[]>();
