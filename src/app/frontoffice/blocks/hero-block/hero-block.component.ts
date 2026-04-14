@@ -1,13 +1,15 @@
-import { Component, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { HeroBlock } from '../../core/models/block.model';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { HeroBlockData } from '../../core/models/block.model';
 
 @Component({
   selector: 'app-hero-block',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './hero-block.component.html',
-  styleUrl: './hero-block.component.scss',
+  styleUrls: ['./hero-block.component.scss'],
 })
 export class HeroBlockComponent {
-  block = input.required<HeroBlock>();
+  @Input() data!: HeroBlockData;
 }

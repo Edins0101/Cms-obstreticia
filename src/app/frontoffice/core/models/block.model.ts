@@ -1,82 +1,48 @@
-// ──────────────────────────────────────────────
-// Tipos de bloques disponibles en el CMS
-// ──────────────────────────────────────────────
+import { Article } from './article.model';
 
-export type BlockType = 'hero' | 'text' | 'image' | 'cards-grid' | 'cta';
+export type BlockType = 'hero' | 'cards-grid' | 'gallery-grid' | 'text' | 'image' | 'cta';
 
-export interface BaseBlock {
+export interface Block {
   id: string;
   type: BlockType;
-  visible: boolean;
-  order: number;
+  data: HeroBlockData | CardsGridBlockData | GalleryBlockData | TextBlockData | ImageBlockData | CtaBlockData;
 }
 
-// ── Hero ──────────────────────────────────────
-export interface HeroBlock extends BaseBlock {
-  type: 'hero';
-  data: {
-    title: string;
-    subtitle?: string;
-    backgroundImage?: string;
-    ctaLabel?: string;
-    ctaRoute?: string;
-    overlay?: boolean;
-  };
+export interface HeroBlockData {
+  article: Article;
+  tag?: string;
 }
 
-// ── Text ──────────────────────────────────────
-export interface TextBlock extends BaseBlock {
-  type: 'text';
-  data: {
-    title?: string;
-    html: string;
-    align?: 'left' | 'center' | 'right';
-  };
+export interface CardsGridBlockData {
+  title: string;
+  articles: Article[];
 }
 
-// ── Image ─────────────────────────────────────
-export interface ImageBlock extends BaseBlock {
-  type: 'image';
-  data: {
-    src: string;
-    alt: string;
-    caption?: string;
-    fullWidth?: boolean;
-  };
+export interface GalleryBlockData {
+  title: string;
+  items: GalleryItem[];
 }
 
-// ── Cards grid ────────────────────────────────
-export interface CardItem {
+export interface GalleryItem {
+  id: string;
+  label: string;
+  emoji: string;
+  color: 'green' | 'pink' | 'blue' | 'amber';
+}
+
+export interface TextBlockData {
+  content: string;
+}
+
+export interface ImageBlockData {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+export interface CtaBlockData {
   title: string;
   description: string;
-  icon?: string;
-  linkLabel?: string;
-  linkRoute?: string;
+  buttonText: string;
+  buttonUrl: string;
 }
-
-export interface CardsGridBlock extends BaseBlock {
-  type: 'cards-grid';
-  data: {
-    title?: string;
-    subtitle?: string;
-    columns?: 2 | 3 | 4;
-    cards: CardItem[];
-  };
-}
-
-// ── CTA ───────────────────────────────────────
-export interface CtaBlock extends BaseBlock {
-  type: 'cta';
-  data: {
-    title: string;
-    description?: string;
-    primaryLabel: string;
-    primaryRoute: string;
-    secondaryLabel?: string;
-    secondaryRoute?: string;
-    variant?: 'primary' | 'accent';
-  };
-}
-
-// ── Unión discriminada ────────────────────────
-export type PageBlock = HeroBlock | TextBlock | ImageBlock | CardsGridBlock | CtaBlock;

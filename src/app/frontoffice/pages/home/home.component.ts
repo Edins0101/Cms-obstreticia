@@ -1,56 +1,26 @@
-import { Component } from '@angular/core';
-import { BlockRendererComponent } from '../blocks/block-renderer/block-renderer.component';
-import { PageBlock } from '../blocks/models/block.model';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CmsService } from '../../core/services/cms.service';
+import { BlockRendererComponent } from '../../blocks/block-renderer/block-renderer.component';
+import { Block } from '../../core/models/block.model';
 
 @Component({
   selector: 'app-home',
-  imports: [BlockRendererComponent],
-  template: `<app-block-renderer [blocks]="blocks" />`
+  standalone: true,
+  imports: [CommonModule, BlockRendererComponent],
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
-  blocks: PageBlock[] = [
-    {
-      id: 'hero-1',
-      type: 'hero',
-      visible: true,
-      order: 1,
-      data: {
-        title: 'Clínica de Obstetricia y Ginecología ',
-        subtitle: 'Cuidamos de ti y de tu bebé con la más alta tecnología y calidez humana.',
-        ctaLabel: 'Agendar consulta',
-        ctaRoute: '/contacto',
-        overlay: false
-      }
-    },
-    {
-      id: 'cards-1',
-      type: 'cards-grid',
-      visible: true,
-      order: 2,
-      data: {
-        title: 'Nuestros servicios',
-        subtitle: 'Atención integral para cada etapa de tu maternidad.',
-        columns: 3,
-        cards: [
-          { title: 'Control prenatal', description: 'Seguimiento médico completo durante todo tu embarazo.' },
-          { title: 'Ecografías',       description: 'Imágenes de alta resolución para monitorear el desarrollo de tu bebé.' },
-          { title: 'Parto humanizado', description: 'Acompañamiento respetuoso en el momento más importante de tu vida.' }
-        ]
-      }
-    },
-    {
-      id: 'cta-1',
-      type: 'cta',
-      visible: true,
-      order: 3,
-      data: {
-        title: '¿Tienes dudas? Estamos aquí para ayudarte.',
-        description: 'Nuestro equipo de especialistas está disponible para resolver todas tus consultas.',
-        primaryLabel: 'Contáctanos',
-        primaryRoute: '/contacto',
-        secondaryLabel: 'Ver más servicios',
-        secondaryRoute: '/servicios'
-      }
-    }
-  ];
+export class HomeComponent implements OnInit {
+  blocks = signal<Block[]>([]);
+  loading = signal(true);
+
+  constructor(private cms: CmsService) {}
+
+  ngOnInit(): void {
+    this.cms.getHomePage().subscribe(page => {
+      this.blocks.set(page.blocks);
+      this.loading.set(false);
+    });
+  }
 }

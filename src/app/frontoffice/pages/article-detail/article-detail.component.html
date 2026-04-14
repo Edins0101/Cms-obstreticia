@@ -1,0 +1,34 @@
+<div class="loading" *ngIf="loading()">
+  <div class="spinner"></div>
+</div>
+
+<div class="not-found" *ngIf="!loading() && !article()">
+  <p>Artículo no encontrado.</p>
+  <a routerLink="/">← Volver al inicio</a>
+</div>
+
+<article class="article-page" *ngIf="!loading() && article() as art">
+  <div class="article-hero" [ngClass]="art.category">
+    <span class="article-emoji">{{ art.emoji }}</span>
+  </div>
+
+  <div class="article-content">
+    <a class="back-link" routerLink="/">← Volver al inicio</a>
+
+    <app-category-badge [category]="art.category" />
+
+    <h1>{{ art.title }}</h1>
+
+    <div class="article-meta">
+      <span>{{ art.date }}</span>
+      <span class="dot"></span>
+      <span>{{ art.readingTime | readingTime }}</span>
+    </div>
+
+    <p class="article-excerpt" *ngIf="art.excerpt">{{ art.excerpt }}</p>
+
+    <div class="article-placeholder">
+      <p>El contenido completo del artículo se cargará desde el CMS.</p>
+    </div>
+  </div>
+</article>

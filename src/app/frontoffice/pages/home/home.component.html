@@ -1,0 +1,10 @@
+<div class="loading" *ngIf="loading()">
+  <div class="spinner"></div>
+</div>
+
+<ng-container *ngIf="!loading()">
+  <app-block-renderer
+    *ngFor="let block of blocks()"
+    [block]="block"
+  />
+</ng-container>
