@@ -1,10 +1,17 @@
 import { Routes } from '@angular/router';
 import { PageLayoutComponent } from './shared/layouts/page-layout.component';
+import { gatekeeperGuard } from './core/guards/gatekeeper.guard';
 
 export const FRONTOFFICE_ROUTES: Routes = [
   {
+    path: 'acceso',
+    loadComponent: () =>
+      import('./gatekeeper/pages/gate-page/gate-page.component').then((m) => m.GatePageComponent),
+  },
+  {
     path: '',
     component: PageLayoutComponent,
+    canActivate: [gatekeeperGuard],
     children: [
       {
         path: '',
