@@ -1,13 +1,17 @@
 .navbar {
   background: #1a1a2e;
-  padding: 0 32px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   height: 48px;
   position: sticky;
   top: 0;
   z-index: 100;
+
+  overflow-x: auto;       
+  white-space: nowrap;    
+  -webkit-overflow-scrolling: touch; 
 
   .nav-logo {
     color: #fff;

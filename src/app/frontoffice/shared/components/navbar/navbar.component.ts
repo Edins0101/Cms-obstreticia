@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; 
 import { ArticleCategory } from '../../../core/models/article.model';
 
 interface NavLink {
@@ -17,6 +17,8 @@ interface NavLink {
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
+  private router = inject(Router);
+
   activeCategory = signal<string>('todos');
 
   navLinks: NavLink[] = [
@@ -29,5 +31,9 @@ export class NavbarComponent {
 
   setActive(category: string): void {
     this.activeCategory.set(category);
+
+    if (category === 'todos') {
+      this.router.navigate(['/']);
+    }
   }
 }
