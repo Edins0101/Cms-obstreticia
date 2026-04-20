@@ -1,19 +1,40 @@
+.home-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.recent-section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .see-all {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
 .loading {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #1a4fa0;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
+  min-height: 400px;
+  font-size: 1.2rem;
+  color: #64748b;
 }

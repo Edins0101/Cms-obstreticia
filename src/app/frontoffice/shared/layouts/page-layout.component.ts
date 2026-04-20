@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from '../components/navbar/navbar.component';
+import { BarraCategoriasComponent } from '../../blocks/barra-categorias/barra-categorias';
 
 @Component({
   selector: 'app-page-layout',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, BarraCategoriasComponent],
   templateUrl: './page-layout.component.html',
   styleUrls: ['./page-layout.component.scss'],
 })
