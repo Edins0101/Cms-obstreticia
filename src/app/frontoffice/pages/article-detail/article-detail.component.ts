@@ -11,7 +11,14 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
 @Component({
   selector: 'app-article-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, CategoryBadgeComponent, ReadingTimePipe, StatusBadgeComponent, LoadingSpinnerComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    CategoryBadgeComponent,
+    ReadingTimePipe,
+    StatusBadgeComponent,
+    LoadingSpinnerComponent,
+  ],
   templateUrl: './article-detail.component.html',
   styleUrls: ['./article-detail.component.scss'],
 })
@@ -23,7 +30,7 @@ export class ArticleDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.cms.getArticleById(id).subscribe(article => {
+    this.cms.getArticleById(id).subscribe((article) => {
       this.article.set(article);
       this.loading.set(false);
     });

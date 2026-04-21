@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
-import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
+import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge';
 import {
   Catalog,
   CatalogFormData,
@@ -12,7 +12,7 @@ import {
   CatalogItemStatus,
   CatalogStatus,
   CatalogTheme,
-  CatalogVisibility
+  CatalogVisibility,
 } from '../models/catalog.model';
 import { CatalogsService } from '../services/catalogs.service';
 
@@ -26,10 +26,10 @@ type EditorMode = 'new' | 'edit';
     DatePipe,
     PageHeaderComponent,
     StatusBadgeComponent,
-    ModalComponent
+    ModalComponent,
   ],
   templateUrl: './catalog-editor.component.html',
-  styleUrl: './catalog-editor.component.scss'
+  styleUrl: './catalog-editor.component.scss',
 })
 export class CatalogEditorComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -52,19 +52,19 @@ export class CatalogEditorComponent implements OnInit {
   readonly statusOptions: { value: CatalogStatus; label: string }[] = [
     { value: 'draft', label: 'Borrador' },
     { value: 'active', label: 'Activo' },
-    { value: 'archived', label: 'Archivado' }
+    { value: 'archived', label: 'Archivado' },
   ];
 
   readonly visibilityOptions: { value: CatalogVisibility; label: string }[] = [
     { value: 'public', label: 'Público' },
-    { value: 'private', label: 'Privado' }
+    { value: 'private', label: 'Privado' },
   ];
 
   readonly themeOptions: { value: CatalogTheme; label: string; accent: string }[] = [
     { value: 'blue', label: 'Institucional', accent: 'Azul' },
     { value: 'teal', label: 'Clínico', accent: 'Turquesa' },
     { value: 'sand', label: 'Editorial', accent: 'Arena' },
-    { value: 'rose', label: 'Humano', accent: 'Rosa' }
+    { value: 'rose', label: 'Humano', accent: 'Rosa' },
   ];
 
   readonly form = this.fb.group({
@@ -74,7 +74,7 @@ export class CatalogEditorComponent implements OnInit {
     status: ['draft' as CatalogStatus],
     visibility: ['public' as CatalogVisibility],
     theme: ['blue' as CatalogTheme],
-    itemLabel: ['Entrada', [Validators.required, Validators.minLength(3)]]
+    itemLabel: ['Entrada', [Validators.required, Validators.minLength(3)]],
   });
 
   readonly itemForm = this.fb.group({
@@ -84,19 +84,19 @@ export class CatalogEditorComponent implements OnInit {
     summary: ['', [Validators.required, Validators.minLength(12)]],
     status: ['active' as CatalogItemStatus],
     featured: [false],
-    tags: ['']
+    tags: [''],
   });
 
   readonly headerTitle = computed(() =>
     this.mode() === 'new'
       ? 'Nuevo catálogo'
-      : `Editar: ${this.form.value.name?.trim() || 'Catálogo'}`
+      : `Editar: ${this.form.value.name?.trim() || 'Catálogo'}`,
   );
 
   readonly breadcrumbs = computed(() => [
     { label: 'Inicio', route: '/admin/dashboard' },
     { label: 'Catálogos', route: '/admin/catalogs' },
-    { label: this.mode() === 'new' ? 'Nuevo' : 'Editar' }
+    { label: this.mode() === 'new' ? 'Nuevo' : 'Editar' },
   ]);
 
   readonly itemMetrics = computed(() => {
@@ -104,18 +104,16 @@ export class CatalogEditorComponent implements OnInit {
 
     return {
       total: items.length,
-      active: items.filter(item => item.status === 'active').length,
-      featured: items.filter(item => item.featured).length
+      active: items.filter((item) => item.status === 'active').length,
+      featured: items.filter((item) => item.featured).length,
     };
   });
 
   readonly itemModalTitle = computed(() =>
-    this.editingItemId() ? 'Editar ítem del catálogo' : 'Nuevo ítem del catálogo'
+    this.editingItemId() ? 'Editar ítem del catálogo' : 'Nuevo ítem del catálogo',
   );
 
-  readonly itemLabelPreview = computed(() =>
-    this.form.value.itemLabel?.trim() || 'Entrada'
-  );
+  readonly itemLabelPreview = computed(() => this.form.value.itemLabel?.trim() || 'Entrada');
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -131,18 +129,18 @@ export class CatalogEditorComponent implements OnInit {
       }
     }
 
-    this.form.controls.name.valueChanges.subscribe(name => {
+    this.form.controls.name.valueChanges.subscribe((name) => {
       if (this.mode() === 'new' && name) {
         this.form.controls.slug.setValue(this.catalogsService.slugify(name), {
-          emitEvent: false
+          emitEvent: false,
         });
       }
     });
 
-    this.itemForm.controls.title.valueChanges.subscribe(title => {
+    this.itemForm.controls.title.valueChanges.subscribe((title) => {
       if (!this.editingItemId() && title && !this.itemForm.controls.slug.dirty) {
         this.itemForm.controls.slug.setValue(this.catalogsService.slugify(title), {
-          emitEvent: false
+          emitEvent: false,
         });
       }
     });
@@ -157,7 +155,7 @@ export class CatalogEditorComponent implements OnInit {
       summary: '',
       status: 'active',
       featured: false,
-      tags: ''
+      tags: '',
     });
     this.itemForm.markAsPristine();
     this.itemForm.markAsUntouched();
@@ -173,7 +171,7 @@ export class CatalogEditorComponent implements OnInit {
       summary: item.summary,
       status: item.status,
       featured: item.featured,
-      tags: item.tags.join(', ')
+      tags: item.tags.join(', '),
     });
     this.itemForm.markAsUntouched();
     this.itemModalOpen.set(true);
@@ -203,16 +201,16 @@ export class CatalogEditorComponent implements OnInit {
       status: value.status as CatalogItemStatus,
       featured: !!value.featured,
       tags: this.parseTags(value.tags),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     setTimeout(() => {
       if (this.editingItemId()) {
-        this.items.update(items =>
-          items.map(existing => (existing.id === item.id ? item : existing))
+        this.items.update((items) =>
+          items.map((existing) => (existing.id === item.id ? item : existing)),
         );
       } else {
-        this.items.update(items => [item, ...items]);
+        this.items.update((items) => [item, ...items]);
       }
 
       this.closeItemModal();
@@ -237,7 +235,7 @@ export class CatalogEditorComponent implements OnInit {
     this.itemDeleteLoading.set(true);
 
     setTimeout(() => {
-      this.items.update(items => items.filter(existing => existing.id !== item.id));
+      this.items.update((items) => items.filter((existing) => existing.id !== item.id));
       this.itemDeleteTarget.set(null);
       this.itemDeleteLoading.set(false);
     }, 260);
@@ -256,26 +254,24 @@ export class CatalogEditorComponent implements OnInit {
   }
 
   toggleFeatured(itemId: string): void {
-    this.items.update(items =>
-      items.map(item =>
-        item.id === itemId
-          ? { ...item, featured: !item.featured, updatedAt: new Date() }
-          : item
-      )
+    this.items.update((items) =>
+      items.map((item) =>
+        item.id === itemId ? { ...item, featured: !item.featured, updatedAt: new Date() } : item,
+      ),
     );
   }
 
   toggleStatus(itemId: string): void {
-    this.items.update(items =>
-      items.map(item =>
+    this.items.update((items) =>
+      items.map((item) =>
         item.id === itemId
           ? {
               ...item,
               status: item.status === 'active' ? 'inactive' : 'active',
-              updatedAt: new Date()
+              updatedAt: new Date(),
             }
-          : item
-      )
+          : item,
+      ),
     );
   }
 
@@ -295,7 +291,7 @@ export class CatalogEditorComponent implements OnInit {
       status: value.status as CatalogStatus,
       visibility: value.visibility as CatalogVisibility,
       theme: value.theme as CatalogTheme,
-      itemLabel: value.itemLabel?.trim() || 'Entrada'
+      itemLabel: value.itemLabel?.trim() || 'Entrada',
     };
 
     setTimeout(() => {
@@ -330,7 +326,7 @@ export class CatalogEditorComponent implements OnInit {
   }
 
   themeLabel(theme: CatalogTheme): string {
-    return this.themeOptions.find(option => option.value === theme)?.label ?? theme;
+    return this.themeOptions.find((option) => option.value === theme)?.label ?? theme;
   }
 
   trackTheme(index: number): number {
@@ -345,30 +341,34 @@ export class CatalogEditorComponent implements OnInit {
       status: catalog.status,
       visibility: catalog.visibility,
       theme: catalog.theme,
-      itemLabel: catalog.itemLabel
+      itemLabel: catalog.itemLabel,
     });
 
     this.items.set(
-      catalog.items.map(item => ({
+      catalog.items.map((item) => ({
         ...item,
-        tags: [...item.tags]
-      }))
+        tags: [...item.tags],
+      })),
     );
   }
 
   private parseTags(tagsValue: string | null | undefined): string[] {
-    return [...new Set((tagsValue ?? '')
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(Boolean))];
+    return [
+      ...new Set(
+        (tagsValue ?? '')
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      ),
+    ];
   }
 
   private buildUniqueItemSlug(source: string): string {
     const baseSlug = this.catalogsService.slugify(source);
     const takenSlugs = new Set(
       this.items()
-        .filter(item => item.id !== this.editingItemId())
-        .map(item => item.slug)
+        .filter((item) => item.id !== this.editingItemId())
+        .map((item) => item.slug),
     );
 
     let candidate = baseSlug;
