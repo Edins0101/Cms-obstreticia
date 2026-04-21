@@ -78,6 +78,12 @@
 
   <p class="form-legal">
     Al continuar aceptas nuestra
-    <a href="#" target="_blank">Política de Privacidad</a>. Datos protegidos por Microsoft Forms.
+    <a href="#" (click)="$event.preventDefault(); toggleModal(true)">Política de Privacidad</a>.
+    Datos protegidos por Microsoft Forms.
   </p>
 </div>
+
+<app-privacidad-modal 
+  [isVisible]="showModalPrivacidad" 
+  (onClose)="toggleModal(false)">
+</app-privacidad-modal>
