@@ -1,17 +1,9 @@
 @if (!loading()) {
   <div class="home-content">
-    <!-- Publicaciones Recientes -->
-    <section class="recent-section">
-      <div class="section-header">
-        <h2>Publicaciones Recientes</h2>
-        <a routerLink="/categoria/todos" class="see-all">Ver todas →</a>
-      </div>
-
-      <!-- Bloques dinámicos del CMS -->
-      @for (block of blocks(); track block.id) {
-        <app-block-renderer [block]="block" />
-      }
-    </section>
+    <!-- Bloques dinámicos del CMS -->
+    @for (block of blocks(); track block.id) {
+      <app-block-renderer [block]="block" />
+    }
   </div>
 } @else {
   <div class="loading">Cargando...</div>
