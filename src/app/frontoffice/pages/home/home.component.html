@@ -1,10 +1,18 @@
-<div class="loading" *ngIf="loading()">
-  <div class="spinner"></div>
-</div>
+@if (!loading()) {
+  <div class="home-content">
+    <!-- Publicaciones Recientes -->
+    <section class="recent-section">
+      <div class="section-header">
+        <h2>Publicaciones Recientes</h2>
+        <a routerLink="/categoria/todos" class="see-all">Ver todas →</a>
+      </div>
 
-<ng-container *ngIf="!loading()">
-  <app-block-renderer
-    *ngFor="let block of blocks()"
-    [block]="block"
-  />
-</ng-container>
+      <!-- Bloques dinámicos del CMS -->
+      @for (block of blocks(); track block.id) {
+        <app-block-renderer [block]="block" />
+      }
+    </section>
+  </div>
+} @else {
+  <div class="loading">Cargando...</div>
+}

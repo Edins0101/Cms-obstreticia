@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { CmsService } from '../../core/services/cms.service';
 import { BlockRendererComponent } from '../../blocks/block-renderer/block-renderer.component';
 import { Block } from '../../core/models/block.model';
@@ -7,7 +8,7 @@ import { Block } from '../../core/models/block.model';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, BlockRendererComponent],
+  imports: [CommonModule, RouterLink, BlockRendererComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })

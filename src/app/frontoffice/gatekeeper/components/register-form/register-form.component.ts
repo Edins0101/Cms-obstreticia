@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { GatekeeperForm, FACULTADES } from '../../../core/models/gatekeeper.model';
 import { GatekeeperService } from '../../../core/services/gatekeeper.service';
+import { PrivacidadModalComponent } from '../privacidad-modal/privacidad-modal.component';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, PrivacidadModalComponent],
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.scss'],
 })
 export class RegisterFormComponent {
+  showModalPrivacidad = false;
+
   @Output() registered = new EventEmitter<void>();
 
   facultades = FACULTADES;
@@ -60,5 +63,11 @@ export class RegisterFormComponent {
         );
       },
     });
+  }
+
+  //modal
+
+  toggleModal(estado: boolean) {
+    this.showModalPrivacidad = estado;
   }
 }
