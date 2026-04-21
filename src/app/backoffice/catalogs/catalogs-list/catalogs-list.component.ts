@@ -3,7 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
-import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
+import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge';
 import { Catalog, CatalogStatus, CatalogTheme, CatalogVisibility } from '../models/catalog.model';
 import { CatalogsService } from '../services/catalogs.service';
 
@@ -19,7 +19,7 @@ interface FilterOption {
   selector: 'app-catalogs-list',
   imports: [RouterLink, DatePipe, PageHeaderComponent, StatusBadgeComponent, ModalComponent],
   templateUrl: './catalogs-list.component.html',
-  styleUrl: './catalogs-list.component.scss'
+  styleUrl: './catalogs-list.component.scss',
 })
 export class CatalogsListComponent {
   private readonly router = inject(Router);
@@ -41,18 +41,18 @@ export class CatalogsListComponent {
       {
         value: 'active',
         label: 'Activos',
-        count: catalogs.filter(catalog => catalog.status === 'active').length
+        count: catalogs.filter((catalog) => catalog.status === 'active').length,
       },
       {
         value: 'draft',
         label: 'Borradores',
-        count: catalogs.filter(catalog => catalog.status === 'draft').length
+        count: catalogs.filter((catalog) => catalog.status === 'draft').length,
       },
       {
         value: 'archived',
         label: 'Archivados',
-        count: catalogs.filter(catalog => catalog.status === 'archived').length
-      }
+        count: catalogs.filter((catalog) => catalog.status === 'archived').length,
+      },
     ];
   });
 
@@ -60,7 +60,7 @@ export class CatalogsListComponent {
     const query = this.searchQuery().toLowerCase().trim();
     const filter = this.statusFilter();
 
-    return this.catalogs().filter(catalog => {
+    return this.catalogs().filter((catalog) => {
       const matchesFilter = filter === 'all' || catalog.status === filter;
       const matchesQuery =
         !query ||
@@ -128,7 +128,7 @@ export class CatalogsListComponent {
   }
 
   featuredItems(catalog: Catalog): number {
-    return catalog.items.filter(item => item.featured).length;
+    return catalog.items.filter((item) => item.featured).length;
   }
 
   itemLabel(catalog: Catalog): string {
