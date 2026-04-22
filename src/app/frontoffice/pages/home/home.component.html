@@ -1,7 +1,11 @@
-<div class="loading" *ngIf="loading()">
-  <div class="spinner"></div>
-</div>
 
-<ng-container *ngIf="!loading()">
-  <app-block-renderer *ngFor="let block of blocks()" [block]="block" />
-</ng-container>
+@if (!loading()) {
+  <div class="home-content">
+    <!-- Bloques dinámicos del CMS -->
+    @for (block of blocks(); track block.id) {
+      <app-block-renderer [block]="block" />
+    }
+  </div>
+} @else {
+  <div class="loading">Cargando...</div>
+}

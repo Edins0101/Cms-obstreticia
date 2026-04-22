@@ -9,6 +9,13 @@ export const backofficeRoutes: Routes = [
       import('./auth/login/login.component').then(m => m.LoginComponent)
   },
   {
+    // Builder fuera del layout principal (pantalla completa)
+    path: 'pages/:id/builder',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/page-builder/page-builder.component').then(m => m.PageBuilderComponent)
+  },
+  {
     path: '',
     canActivate: [authGuard],
     loadComponent: () =>
@@ -18,6 +25,16 @@ export const backofficeRoutes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
+      {
+        path: 'pages',
+        loadChildren: () =>
+          import('./pages/pages.routes').then(m => m.pagesRoutes)
+      },
+      {
+        path: 'catalogs',
+        loadChildren: () =>
+          import('./catalogs/catalogs.routes').then(m => m.catalogsRoutes)
       },
       {
         path: '',

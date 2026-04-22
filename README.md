@@ -80,6 +80,13 @@ Cms-obstreticia/
 │   │   │   │
 │   │   │   ├── dashboard/           # Página principal del admin (estadísticas + actividad)
 │   │   │   │
+│   │   │   ├── catalogs/            # Gestión de catálogos e ítems reutilizables
+│   │   │   │   ├── catalogs.routes.ts
+│   │   │   │   ├── models/          # Interfaces de catálogos e ítems
+│   │   │   │   ├── services/        # Servicio mock CRUD con Signals
+│   │   │   │   ├── catalogs-list/   # Listado, filtros, KPIs y acciones CRUD
+│   │   │   │   └── catalog-editor/  # Editor de catálogo + CRUD de ítems
+│   │   │   │
 │   │   │   └── shared/              # Componentes UI reutilizables del back office
 │   │   │       └── components/
 │   │   │           ├── page-header/ # Encabezado de página con breadcrumb y slot de acciones
@@ -120,8 +127,10 @@ Cms-obstreticia/
 | `/` | Público | Sitio público — renderiza bloques de la  |
 | `/admin/login` | Público | Inicio de sesión del panel |
 | `/admin/dashboard` | Privado | Dashboard principal con estadísticas |
-| `/admin/pages` | Privado | Gestión de páginas *(próximamente)* |
-| `/admin/catalogs` | Privado | Gestión de catálogos *(próximamente)* |
+| `/admin/pages` | Privado | Gestión de páginas y contenido por bloques |
+| `/admin/catalogs` | Privado | Listado principal de catálogos, filtros y acciones CRUD |
+| `/admin/catalogs/new` | Privado | Crear un catálogo y registrar sus ítems |
+| `/admin/catalogs/:id/edit` | Privado | Editar metadatos del catálogo y administrar sus ítems |
 | `/admin/media` | Privado | Gestión de multimedia *(próximamente)* |
 | `/admin/users` | Privado | Gestión de usuarios *(próximamente)* |
 | `/admin/settings` | Privado | Configuración del sistema *(próximamente)* |
@@ -162,6 +171,23 @@ Abre el navegador en `http://localhost:4200`.
 |---|---|
 | `http://localhost:4200/` | Sitio público |
 | `http://localhost:4200/admin/login` | Panel de administración |
+| `http://localhost:4200/admin/catalogs` | Módulo de catálogos del backoffice |
+
+### Módulo de catálogos
+
+El módulo de catálogos ya está disponible en el backoffice y funciona completamente en modo mock desde la ruta:
+
+```text
+http://localhost:4200/admin/catalogs
+```
+
+Desde esta pantalla se puede:
+
+- Crear catálogos
+- Editar metadatos del catálogo
+- Duplicar catálogos
+- Eliminar catálogos
+- Crear, editar, reordenar, destacar, activar o eliminar ítems dentro de cada catálogo
 
 ### Credenciales de prueba (mock)
 

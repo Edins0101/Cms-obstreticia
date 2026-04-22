@@ -51,10 +51,10 @@
 
   transition: all 0.25s ease;
 
-  // 🔷 profundidad real
+  
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 
-  // 🔷 capa de luz superior (más dinámica)
+  
   &::before {
     content: '';
     position: absolute;
@@ -64,7 +64,7 @@
     transition: opacity 0.25s ease;
   }
 
-  // 🔷 overlay mejorado para contraste fuerte
+  
   &::after {
     content: '';
     position: absolute;
@@ -94,7 +94,7 @@
     }
   }
 
-  // 🔷 colores más vivos (más impacto visual)
+  
   &.color-green {
     background: linear-gradient(135deg, #a8e6bf, #5ecf95);
   }

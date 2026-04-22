@@ -1,11 +1,11 @@
 .ug-modal-overlay {
   position: fixed !important;
-  inset: 0 !important; // 🔷 ocupa toda la pantalla
+  inset: 0 !important; 
   backdrop-filter: blur(8px);
   z-index: 1000000 !important;
 
   display: flex !important;
-  align-items: center; // 🔷 centrado vertical real
+  align-items: center; 
   justify-content: center;
 
   padding: 20px;
