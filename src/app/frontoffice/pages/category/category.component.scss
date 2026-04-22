@@ -29,63 +29,18 @@
   }
 }
 
-.empty-state {
+.empty {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 60px 32px;
-  background: #f8fafc;
-  border-radius: 12px;
-  margin-top: 20px;
-
-  .empty-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-    opacity: 0.7;
-  }
-
-  h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #1a1a2e;
-    margin-bottom: 8px;
-  }
-
-  p {
-    font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 6px;
-  }
-
-  .btn-return {
-    display: inline-block;
-    margin-top: 24px;
-    padding: 10px 24px;
-    background-color: #1a4fa0;
-    color: white;
-    text-decoration: none;
-    border-radius: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: #0e3a7a;
-    }
-  }
+  padding: 60px 0;
+  color: #6b7280;
+  font-size: 14px;
 }
 
 .loading {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
   padding: 60px 0;
-  gap: 12px;
-
-  p {
-    font-size: 14px;
-    color: #6b7280;
-  }
 }
 
 .spinner {

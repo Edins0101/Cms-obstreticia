@@ -2,9 +2,7 @@
   <div class="loading">
     <app-loading-spinner></app-loading-spinner>
   </div>
-}
-
-@else if (article(); as art) {
+} @else if (article(); as art) {
   <article class="article-page">
     <div class="article-hero" [ngClass]="art.category">
       <div class="hero-overlay">
@@ -18,16 +16,12 @@
       </div>
 
       <header class="article-header">
-        <a class="back-link" routerLink="/">
-          <span class="arrow">←</span> Volver al inicio
-        </a>
+        <a class="back-link" routerLink="/"> <span class="arrow">←</span> Volver al inicio </a>
 
         <h1>{{ art.title }}</h1>
 
         <div class="article-meta">
-          <div class="meta-item">
-            <span class="icon">📅</span> {{ art.date }}
-          </div>
+          <div class="meta-item"><span class="icon">📅</span> {{ art.date }}</div>
           <span class="dot"></span>
           <div class="meta-item">
             <span class="icon">⏱️</span> {{ art.readingTime | readingTime }}
@@ -38,7 +32,7 @@
       </header>
 
       <section class="body-section">
-        @if(art.excerpt) {
+        @if (art.excerpt) {
           <p class="article-excerpt">{{ art.excerpt }}</p>
         }
 
@@ -50,9 +44,7 @@
       </section>
     </div>
   </article>
-}
-
-@else {
+} @else {
   <div class="not-found">
     <div class="not-found-icon">🔍</div>
     <h3>Artículo no encontrado</h3>
