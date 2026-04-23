@@ -4,12 +4,9 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 
 import { PagesService } from '../services/pages.service';
 import { PageBlock, BlockType } from '../../../frontoffice/core/models/block.model';
-import { HeroBlockComponent } from '../../../frontoffice/blocks/hero-block/hero-block.component';
 import { TextBlockComponent } from '../../../frontoffice/blocks/text-block/text-block.component';
 import { ImageBlockComponent } from '../../../frontoffice/blocks/image-block/image-block.component';
-import { CardsGridComponent } from '../../../frontoffice/blocks/cards-grid/cards-grid.component';
 import { CtaBlockComponent } from '../../../frontoffice/blocks/cta-block/cta-block.component';
-import { GalleryGridComponent } from '../../../frontoffice/blocks/gallery-grid/gallery-grid.component';
 
 type Device = 'desktop' | 'tablet' | 'mobile';
 
@@ -24,12 +21,9 @@ interface BlockPaletteItem {
   imports: [
     RouterLink,
     DragDropModule,
-    HeroBlockComponent,
     TextBlockComponent,
     ImageBlockComponent,
-    CardsGridComponent,
     CtaBlockComponent,
-    GalleryGridComponent,
   ],
   templateUrl: './page-builder.component.html',
   styleUrl: './page-builder.component.scss',

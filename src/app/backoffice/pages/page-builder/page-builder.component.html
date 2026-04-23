@@ -368,29 +368,59 @@
               <!-- Bloque renderizado -->
               <div class="block-preview" [class.block-preview--faded]="!block.visible">
                 @switch (block.type) {
+
                   @case ('hero') {
-                    <app-hero-block [data]="$any(block)" />
+                    <div class="bp-hero" [style.backgroundImage]="$any(block).data.backgroundImage ? 'url(' + $any(block).data.backgroundImage + ')' : null">
+                      <div class="bp-hero__overlay" [class.bp-hero__overlay--on]="$any(block).data.overlay"></div>
+                      <div class="bp-hero__content">
+                        <h2 class="bp-hero__title">{{ $any(block).data.title }}</h2>
+                        @if ($any(block).data.subtitle) {
+                          <p class="bp-hero__subtitle">{{ $any(block).data.subtitle }}</p>
+                        }
+                        @if ($any(block).data.ctaLabel) {
+                          <span class="bp-hero__cta">{{ $any(block).data.ctaLabel }}</span>
+                        }
+                      </div>
+                    </div>
                   }
+
                   @case ('text') {
                     <app-text-block [block]="$any(block)" />
                   }
+
                   @case ('image') {
                     <app-image-block [block]="$any(block)" />
                   }
+
                   @case ('cards-grid') {
-                    <app-cards-grid [data]="$any(block)" />
+                    <div class="bp-cards">
+                      @if ($any(block).data.title) {
+                        <h2 class="bp-cards__title">{{ $any(block).data.title }}</h2>
+                      }
+                      @if ($any(block).data.subtitle) {
+                        <p class="bp-cards__subtitle">{{ $any(block).data.subtitle }}</p>
+                      }
+                      <div class="bp-cards__grid" [style.grid-template-columns]="'repeat(' + ($any(block).data.columns ?? 3) + ', 1fr)'">
+                        @for (card of $any(block).data.cards; track $index) {
+                          <div class="bp-card">
+                            <strong>{{ card.title }}</strong>
+                            <p>{{ card.description }}</p>
+                          </div>
+                        }
+                      </div>
+                    </div>
                   }
+
                   @case ('cta') {
                     <app-cta-block [block]="$any(block)" />
                   }
-                  @case ('gallery-grid') {
-                    <app-gallery-grid [data]="$any(block)" />
-                  }
+
                   @default {
                     <div class="block-unknown">
                       <p>Vista previa no disponible para este bloque.</p>
                     </div>
                   }
+
                 }
               </div>
             </div>
