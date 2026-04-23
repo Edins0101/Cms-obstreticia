@@ -20,6 +20,8 @@ export class GatePageComponent implements OnInit {
     private gatekeeper: GatekeeperService,
   ) {}
 
+  currentYear: number = new Date().getFullYear();
+
   ngOnInit(): void {
     if (this.gatekeeper.hasValidToken()) {
       this.redirect();
