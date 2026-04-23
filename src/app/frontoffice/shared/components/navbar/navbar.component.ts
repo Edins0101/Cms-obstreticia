@@ -21,7 +21,7 @@ export class NavbarComponent {
   private router = inject(Router);
 
   activeCategory = signal<string>('todos');
-
+  searchQuery = '';
   menuOpen = false;
 
   navLinks: NavLink[] = [
@@ -38,6 +38,16 @@ export class NavbarComponent {
     if (category === 'todos') {
       this.router.navigate(['/']);
     }
+  }
+
+  perfomSearch(): void {
+    const query = this.searchQuery.trim();
+
+    if (!query) return;
+
+    this.router.navigate(['/explorar'], {
+      queryParams: { q: query },
+    });
   }
 
   toggleMenu(): void {

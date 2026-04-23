@@ -29,7 +29,12 @@
         <path d="m21 21-4.35-4.35" />
       </svg>
 
-      <input type="text" placeholder="Buscar artículos..." />
+      <input
+        type="text"
+        placeholder="Buscar artículos..."
+        [(ngModel)]="searchQuery"
+        (keydown.enter)="perfomSearch()"
+      />
     </div>
   </div>
 </nav>
