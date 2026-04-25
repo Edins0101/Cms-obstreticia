@@ -209,4 +209,19 @@ export class CmsService {
   getArticleById(id: string): Observable<Article | undefined> {
     return of(this.mockArticles.find(a => a.id === id));
   }
+
+  searchArticles(query: string): Observable<Article[]> {
+  const q = query.toLowerCase().trim();
+
+  if (!q) {
+    return of(this.mockArticles);
+  }
+
+  const result = this.mockArticles.filter(article =>
+    article.title.toLowerCase().includes(q) ||
+    article.excerpt?.toLowerCase().includes(q) ||
+    article.category.toLowerCase().includes(q)
+  );
+  return of(result);
+  }
 }

@@ -20,6 +20,7 @@ export class NavbarComponent {
   private router = inject(Router);
 
   activeCategory = signal<string>('todos');
+  searchQuery = signal('');
 
   navLinks: NavLink[] = [
     { label: 'Investigación', category: 'investigacion', route: '/categoria/investigacion' },
@@ -35,5 +36,13 @@ export class NavbarComponent {
     if (category === 'todos') {
       this.router.navigate(['/']);
     }
+  }
+
+  search(): void {
+    const query = this.searchQuery().trim();
+
+    this.router.navigate(['/buscar'], {
+      queryParams: { q: query }
+    });
   }
 }
