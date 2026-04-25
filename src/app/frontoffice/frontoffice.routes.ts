@@ -29,6 +29,23 @@ export const FRONTOFFICE_ROUTES: Routes = [
         loadComponent: () =>
           import('./pages/category/category.component').then((m) => m.CategoryComponent),
       },
+      {
+        path: 'explorar',
+        loadComponent: () =>
+          import('./pages/explore-all/explore-all').then((m) => m.ExploreAllComponent),
+      },
+      {
+        path: 'explorar-galeria',
+        loadComponent: () =>
+          import('./pages/explore-gallery/explore-gallery').then((m) => m.ExploreGalleryComponent),
+      },
+      {
+      path: 'search-results',
+      loadComponent: () =>
+        import('./pages/search-results/search-results').then(
+          (m) => m.SearchResultsComponent
+        ),
+      },
     ],
   },
 ];

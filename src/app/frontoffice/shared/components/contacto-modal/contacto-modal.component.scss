@@ -1,15 +1,15 @@
 .ug-contact-overlay {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  background: rgba(0, 0, 0, 0.8) !important;
+  inset: 0 !important;
+  background: var(--modal-overlay-bg) !important;
   backdrop-filter: blur(12px);
   z-index: 999999 !important;
+
   display: flex !important;
   align-items: center;
   justify-content: center;
+
+  padding: 20px;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -17,12 +17,12 @@
   position: relative;
   width: 90%;
   max-width: 420px;
-  background: rgba(26, 45, 74, 0.98); // --color-sidebar-bg
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--modal-card-bg);
+  border: 1px solid var(--modal-card-border);
   border-radius: 28px;
   padding: 35px;
-  color: #fff;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  color: var(--modal-text);
+  box-shadow: var(--shadow-lg);
   animation: slideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .btn-close-modal {
@@ -31,11 +31,14 @@
     right: 20px;
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--modal-text-soft);
     font-size: 24px;
     cursor: pointer;
-    transition: color 0.2s;
-    &:hover { color: #ff8b87; }
+    transition: color var(--transition);
+
+    &:hover {
+      color: var(--color-danger);
+    }
   }
 
   .card-glow {
@@ -57,13 +60,13 @@
     .icon-box {
       width: 50px;
       height: 50px;
-      background: linear-gradient(135deg, #00c4ff, #0070d8);
-      border-radius: 14px;
+      background: linear-gradient(135deg, var(--modal-accent), var(--color-primary));
+      border-radius: var(--radius-lg);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 22px;
-      color: white;
+      color: #ffffff;
     }
 
     .title-group {
@@ -72,13 +75,15 @@
         font-size: 9px;
         font-weight: 700;
         letter-spacing: 1.5px;
-        color: #00c4ff;
+        color: var(--modal-accent);
         margin-bottom: 2px;
       }
+
       h2 {
         margin: 0;
         font-size: 1.25rem;
         font-weight: 800;
+        color: var(--modal-text);
       }
     }
   }
@@ -86,7 +91,7 @@
   .card-body {
     .description {
       font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.5);
+      color: var(--modal-text-muted);
       line-height: 1.6;
       margin-bottom: 25px;
     }
@@ -100,7 +105,10 @@
         display: flex;
         gap: 15px;
 
-        .item-icon { color: #00c4ff; font-size: 18px; }
+        .item-icon {
+          color: var(--modal-accent);
+          font-size: 18px;
+        }
 
         .item-content {
           label {
@@ -108,10 +116,14 @@
             font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--modal-text-soft);
             margin-bottom: 3px;
           }
-          span { font-size: 0.9rem; color: rgba(255, 255, 255, 0.9); }
+
+          span {
+            font-size: 0.9rem;
+            color: var(--modal-text);
+          }
         }
       }
     }
@@ -119,20 +131,39 @@
 
   .card-footer {
     margin-top: 30px;
+
     .btn-action {
       width: 100%;
-      background: linear-gradient(90deg, #00b4d8, #0096c7);
+      background: linear-gradient(90deg, var(--modal-accent), var(--modal-accent-dark));
       border: none;
       padding: 14px;
-      border-radius: 12px;
-      color: white;
+      border-radius: var(--radius-lg);
+      color: #ffffff;
       font-weight: 700;
       cursor: pointer;
-      transition: transform 0.2s;
-      &:hover { transform: translateY(-2px); opacity: 0.9; }
+      transition: transform var(--transition), opacity var(--transition);
+
+      &:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+      }
     }
   }
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

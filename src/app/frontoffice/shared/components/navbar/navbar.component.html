@@ -1,43 +1,49 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <nav class="navbar">
+  <a class="nav-logo" routerLink="/"> UG <strong>wiki</strong> </a>
 
-  <a class="nav-logo" routerLink="/">
-    UG <strong>wiki</strong>
-  </a>
+  <div class="nav-toggle" (click)="toggleMenu()">☰</div>
+  
 
-  <button
-    class="nav-pill"
-    [class.active]="activeCategory() === 'todos'"
-    (click)="setActive('todos')"
-  >
-    Todos
-  </button>
+@if (menuOpen) { <div class="menu-backdrop" (click)="closeMenu()"></div> }
 
-  <div class="nav-links">
-    <a
-      *ngFor="let link of navLinks"
-      [routerLink]="link.route"
-      [class.active]="activeCategory() === link.category"
-      (click)="setActive(link.category)"
+
+  <div class="nav-content" [class.open]="menuOpen">
+    <button
+      class="nav-pill"
+      [class.active]="activeCategory() === 'todos'"
+      (click)="setActive('todos')"
+      (click)="closeMenu()"
     >
-      {{ link.label }}
-    </a>
+      Todos
+    </button>
+
+    <div class="nav-links">
+      <a
+        *ngFor="let link of navLinks"
+        [routerLink]="link.route"
+        [class.active]="activeCategory() === link.category"
+        (click)="setActive(link.category)"
+        (click)="closeMenu()"
+      >
+        {{ link.label }}
+      </a>
+    </div>
+
+    <div class="nav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.35-4.35" />
+      </svg>
+
+      <input
+        type="text"
+        placeholder="Buscar artículos..."
+        [(ngModel)]="searchQuery"
+        (keydown.enter)="perfomSearch()"
+      />
+    </div>
   </div>
-
-  <div class="nav-search">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" (click)="search()">
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.35-4.35" />
-    </svg>
-
-  <input
-    type="text"
-    placeholder="Buscar artículos..."
-    [value]="searchQuery()"
-    (input)="searchQuery.set($any($event.target).value)"
-    (keyup.enter)="search()"
-  />
-</div>
-
 </nav>

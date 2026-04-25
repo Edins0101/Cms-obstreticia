@@ -25,6 +25,8 @@ export class PageLayoutComponent {
   showAccess: boolean = false;
   showPrivacidad: boolean = false;
 
+  currentYear: number = new Date().getFullYear();
+
   toggleContact(status: boolean): void {
     this.showContact = status;
   }

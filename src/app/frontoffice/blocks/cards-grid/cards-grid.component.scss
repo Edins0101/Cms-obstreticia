@@ -1,6 +1,6 @@
 .cards-section {
   padding: 32px;
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .section-header {
@@ -12,19 +12,20 @@
   h2 {
     font-size: 20px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--color-text);
   }
 
   .see-all {
     font-size: 13px;
-    color: #3a6fd8;
+    color: var(--color-primary);
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: opacity var(--transition), color var(--transition);
 
     &:hover {
       opacity: 0.7;
+      color: var(--color-primary-light);
     }
   }
 }

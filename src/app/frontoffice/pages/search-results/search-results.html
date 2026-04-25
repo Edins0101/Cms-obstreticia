@@ -1,0 +1,76 @@
+<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+<section class="search-hero">
+  <div class="hero-content">
+    <span class="eyebrow"></span>
+
+    <h1>
+      Resultados de búsqueda
+    </h1>
+
+    <p>
+      Explora artículos, investigaciones, eventos y recursos relacionados con tu búsqueda.
+    </p>
+
+    <div class="search-info">
+      @if (searchQuery().trim()) {
+        <span>Buscando: <strong>{{ searchQuery() }}</strong></span>
+      } @else {
+        <span>Mostrando todos los artículos disponibles</span>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="results-section">
+  <div class="results-header">
+    <div>
+      <h2>Contenidos encontrados</h2>
+      <p>{{ filteredArticles().length }} artículo(s) encontrado(s)</p>
+    </div>
+
+    <a routerLink="/explorar-galeria" class="back-link">
+      Ver galería
+    </a>
+  </div>
+
+  <div class="gallery-toolbar">
+  <input
+    type="text"
+    placeholder="Buscar tema..."
+    [value]="searchQuery()"
+    (input)="updateSearch($any($event.target).value)"
+  />
+
+  <div class="sort-box">
+      <label>Ordenar por:</label>
+
+    <select
+      [value]="selectedSort()"
+      (change)="updateSort($any($event.target).value)"
+    >
+      <option value="original">Todos (orden original)</option>
+      <option value="az">Nombre A-Z</option>
+      <option value="za">Nombre Z-A</option>
+      <option value="views">Más vistos</option>
+      <option value="readingTime">Menor tiempo de lectura</option>
+    </select>
+  </div>
+
+  <strong class="results-count">
+    {{ filteredArticles().length }} artículos encontrados
+  </strong>
+</div>
+
+  <div class="gallery-grid">
+    @for (article of filteredArticles(); track article.id) {
+      <app-article-card [article]="article" />
+    } @empty {
+      <div class="empty-state">
+        <h3>No se encontraron resultados</h3>
+        <p>
+          Intenta buscar por título, categoría, autor o etiqueta.
+        </p>
+      </div>
+    }
+  </div>
+</section>

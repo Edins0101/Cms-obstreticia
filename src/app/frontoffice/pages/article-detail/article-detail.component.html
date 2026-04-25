@@ -11,37 +11,94 @@
     </div>
 
     <div class="article-content">
-      <div class="floating-category" [ngClass]="art.category">
-        {{ art.category | uppercase }}
-      </div>
+
 
       <header class="article-header">
-        <a class="back-link" routerLink="/"> <span class="arrow">←</span> Volver al inicio </a>
+        <a class="back-link" routerLink="/">
+          <span class="arrow">←</span> Volver al inicio
+        </a>
 
         <h1>{{ art.title }}</h1>
 
         <div class="article-meta">
-          <div class="meta-item"><span class="icon">📅</span> {{ art.date }}</div>
+          <div class="meta-item">
+            <span class="icon">📅</span> {{ art.date }}
+          </div>
+
           <span class="dot"></span>
+
+          <div class="meta-item">
+            <span class="icon">👤</span>
+            {{ art.authors?.join(', ') || 'Autores no especificados' }}
+          </div>
+
+          <span class="dot"></span>
+
           <div class="meta-item">
             <span class="icon">⏱️</span> {{ art.readingTime | readingTime }}
           </div>
+
           <span class="dot"></span>
+
+          <div class="meta-item">
+            <span class="icon">👁️</span> {{ art.views || 0 }} vistas
+          </div>
+
+          <span class="dot"></span>
+
           <app-status-badge status="published"></app-status-badge>
         </div>
       </header>
 
-      <section class="body-section">
-        @if (art.excerpt) {
-          <p class="article-excerpt">{{ art.excerpt }}</p>
-        }
+      <div class="article-layout">
+        <main class="article-main">
+          <section class="body-section">
+            @if (art.excerpt) {
+              <p class="article-excerpt">{{ art.excerpt }}</p>
+            }
 
-        <div class="article-body-text">
-          <p>El contenido completo del artículo se cargará desde el CMS.</p>
-          <div class="placeholder-line"></div>
-          <div class="placeholder-line short"></div>
-        </div>
-      </section>
+            <div class="article-body-text">
+              <p>El contenido completo del artículo se cargará desde el CMS.</p>
+              <div class="placeholder-line"></div>
+              <div class="placeholder-line short"></div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="article-sidebar">
+          <section class="article-taxonomy">
+            <div class="taxonomy-block">
+              <span class="taxonomy-title">Categoría</span>
+              <span class="category-pill" [ngClass]="art.category">
+                {{ art.category }}
+              </span>
+            </div>
+
+            @if (art.tags?.length) {
+              <div class="taxonomy-block">
+                <span class="taxonomy-title">Etiquetas</span>
+
+                <div class="tags-list">
+                  @for (tag of art.tags; track tag) {
+                    <span class="tag-pill">#{{ tag }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </section>
+        </aside>
+        @if (relatedArticles().length) {
+        <section class="related-section">
+          <h2>Artículos relacionados</h2>
+
+          <div class="related-grid">
+            @for (item of relatedArticles(); track item.id) {
+              <app-article-card [article]="item"></app-article-card>
+            }
+          </div>
+        </section>
+      }
+      </div>
     </div>
   </article>
 } @else {

@@ -10,4 +10,9 @@ export interface Article {
   excerpt?: string;
   featured?: boolean;
   imageUrl?: string;
+  //agregadas para busqueda por autor, vistas y tags - lzamora
+  authors?: string[];
+  views?: number;
+  tags?: string[];
 }
+

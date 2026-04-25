@@ -3,12 +3,30 @@
     <span>{{ article.emoji }}</span>
   </div>
   <div class="card-body">
-    <app-category-badge [category]="article.category" />
-    <p class="card-title">{{ article.title }}</p>
+  <app-category-badge [category]="article.category" />
+
+  <p class="card-title">{{ article.title }}</p>
+
+  <div class="card-meta-group">
     <div class="card-meta">
       <span>{{ article.date }}</span>
       <span class="dot"></span>
       <span>{{ article.readingTime | readingTime }}</span>
     </div>
+
+    <div class="card-meta secondary">
+      <span>👤 {{ article.authors?.join(', ') || 'Autores no especificados' }}</span>
+      <span class="dot"></span>
+      <span>👁️ {{ article.views || 0 }} vistas</span>
+    </div>
   </div>
+
+  @if (article.tags?.length) {
+    <div class="article-tags">
+      @for (tag of article.tags; track tag) {
+        <span class="tag-pill">#{{ tag }}</span>
+      }
+    </div>
+  }
+</div>
 </article>

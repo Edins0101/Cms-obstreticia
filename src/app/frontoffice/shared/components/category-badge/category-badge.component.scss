@@ -1,23 +1,46 @@
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 1.1px;
   text-transform: uppercase;
 
-  &.investigacion {
-    color: #ffffff;
-  }
-  &.cultura {
-    color: #ffffff;
-  }
-  &.tecnologia {
-    color: #ffffff;
-  }
-  &.eventos {
-    color: #ffffff;
-  }
-  &.proyectos {
-    color: #ffffff;
-  }
+  border-radius: 999px;
+
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+
+  border: 1px solid var(--color-border);
+}
+
+/* ===================== */
+/* 🎨 Categorías */
+/* ===================== */
+
+.badge.investigacion {
+  background: var(--cat-investigacion-bg);
+  color: var(--cat-investigacion-text);
+}
+
+.badge.tecnologia {
+  background: var(--cat-tecnologia-bg);
+  color: var(--cat-tecnologia-text);
+}
+
+.badge.cultura {
+  background: var(--cat-cultura-bg);
+  color: var(--cat-cultura-text);
+}
+
+.badge.eventos {
+  background: var(--cat-eventos-bg);
+  color: var(--cat-eventos-text);
+}
+
+.badge.proyectos {
+  background: var(--cat-proyectos-bg);
+  color: var(--cat-proyectos-text);
 }

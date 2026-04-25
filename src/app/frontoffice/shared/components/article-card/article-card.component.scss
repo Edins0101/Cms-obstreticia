@@ -1,30 +1,34 @@
 .card {
-  display: block;
-  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 190px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #1a2d4a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(0, 196, 255, 0.3);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
   }
 
-  
   .card-img {
-    height: 100px;
+    height: 65px;
+    min-height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(0, 196, 255, 0.08);
 
     span {
-      font-size: 2rem;
-      transition: transform 0.2s ease;
+      font-size: 1.5rem;
+      transition: transform var(--transition);
     }
   }
 
@@ -32,42 +36,46 @@
     transform: scale(1.05);
   }
 
-
   .card-body {
-    padding: 14px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+    flex: 1;
   }
 
   .card-title {
-    font-size: 0.92rem;
+    font-size: 0.82rem;
     font-weight: 600;
-    color: #ffffff;
-    line-height: 1.4;
-    transition: color 0.2s;
+    color: var(--card-text);
+    line-height: 1.3;
+    transition: color var(--transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   &:hover .card-title {
-    color: #00c4ff;
+    color: var(--color-accent);
   }
 
   .card-meta {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.72rem;
-    color: rgba(255, 255, 255, 0.5);
+    gap: 5px;
+    font-size: 0.68rem;
+    color: var(--card-text-muted);
+    flex-wrap: wrap;
 
     .dot {
       width: 3px;
       height: 3px;
-      background: rgba(255, 255, 255, 0.4);
+      background: var(--color-text-light);
       border-radius: 50%;
     }
   }
 
-  
   &.prenatal .card-img {
     background: rgba(0, 196, 255, 0.12);
   }
@@ -83,4 +91,27 @@
   &.postparto .card-img {
     background: rgba(236, 72, 153, 0.12);
   }
+}
+
+.card-meta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: auto;
+}
+
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.tag-pill {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  font-size: 12px;
+  font-weight: 700;
 }
