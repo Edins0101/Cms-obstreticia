@@ -16,7 +16,7 @@
       </div>
 
       <header class="article-header">
-        <a class="back-link" routerLink="/"> <span class="arrow">←</span> Volver al inicio </a>
+        <a class="back-link" routerLink="/explorar"> <span class="arrow">←</span> Volver al repositorio </a>
 
         <h1>{{ art.title }}</h1>
 
@@ -33,22 +33,32 @@
 
       <section class="body-section">
         @if (art.excerpt) {
-          <p class="article-excerpt">{{ art.excerpt }}</p>
+          <div class="article-excerpt-container">
+            <p class="article-excerpt">{{ art.excerpt }}</p>
+          </div>
         }
 
         <div class="article-body-text">
-          <p>El contenido completo del artículo se cargará desde el CMS.</p>
-          <div class="placeholder-line"></div>
-          <div class="placeholder-line short"></div>
+          <h2>Introducción</h2>
+          <p>
+            Los modelos de inteligencia artificial han comenzado a transformar el diagnóstico médico en formas que hasta hace poco parecían propias de la ciencia ficción. En la Universidad de Guayaquil, investigadores de la Facultad de Ciencias Médicas han desarrollado un sistema capaz de detectar patologías con una velocidad sin precedentes.
+          </p>
+
+          <blockquote class="accent-quote">
+            <p>"El sistema logró una precisión del 94.3% en la detección temprana de enfermedades cardiovasculares, superando el rendimiento promedio de especialistas humanos en condiciones controladas."</p>
+          </blockquote>
+
+          <h2>Metodología Aplicada</h2>
+          <p>
+            El equipo utilizó redes neuronales convolucionales entrenadas con más de 200,000 imágenes médicas anonimizadas, obtenidas en colaboración con el Hospital Luis Vernaza y el IESS Guayaquil durante un período de dos años de recolección de datos.
+          </p>
+          
+          <p>
+            Esta implementación no busca reemplazar al médico, sino servir como una herramienta de triaje avanzada que priorice los casos más críticos en las salas de emergencia.
+          </p>
         </div>
       </section>
     </div>
   </article>
 } @else {
-  <div class="not-found">
-    <div class="not-found-icon">🔍</div>
-    <h3>Artículo no encontrado</h3>
-    <p>Lo sentimos, no pudimos encontrar lo que buscabas.</p>
-    <a routerLink="/" class="btn-back">Volver al inicio</a>
-  </div>
-}
+  }
