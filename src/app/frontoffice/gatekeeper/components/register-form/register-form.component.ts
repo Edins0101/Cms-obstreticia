@@ -2,12 +2,11 @@ import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { GatekeeperService } from '../../../core/services/gatekeeper.service';
-import { PrivacidadModalComponent } from '../privacidad-modal/privacidad-modal.component';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PrivacidadModalComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.scss'],
 })

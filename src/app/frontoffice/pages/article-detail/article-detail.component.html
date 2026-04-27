@@ -42,7 +42,7 @@
           }
 
           <div class="article-body-text">
-            @if (art.paragraphs?.length) {
+            @if (art.paragraphs.length) {
               @for (p of art.paragraphs; track $index) {
                 <p>{{ p }}</p>
               }
