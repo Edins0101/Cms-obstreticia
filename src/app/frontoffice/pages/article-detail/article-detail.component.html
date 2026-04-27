@@ -10,55 +10,60 @@
       </div>
     </div>
 
-    <div class="article-content">
-      <div class="floating-category" [ngClass]="art.category">
-        {{ art.category | uppercase }}
+    <div class="article-layout">
+      <div class="article-content">
+        <div class="floating-category" [ngClass]="art.category">
+          {{ art.category | uppercase }}
+        </div>
+
+        <header class="article-header">
+          <a class="back-link" routerLink="/explorar">
+            <span class="arrow">←</span> Volver al repositorio
+          </a>
+
+          <h1>{{ art.title }}</h1>
+
+          <div class="article-meta">
+            <div class="meta-item"><span class="icon">📅</span> {{ art.date }}</div>
+            <span class="dot"></span>
+            <div class="meta-item">
+              <span class="icon">⏱️</span> {{ art.readingTime | readingTime }}
+            </div>
+            <span class="dot"></span>
+            <app-status-badge status="published"></app-status-badge>
+          </div>
+        </header>
+
+        <section class="body-section">
+          @if (art.excerpt) {
+            <div class="article-excerpt-container">
+              <p class="article-excerpt">{{ art.excerpt }}</p>
+            </div>
+          }
+
+          <div class="article-body-text">
+            @if (art.paragraphs?.length) {
+              @for (p of art.paragraphs; track $index) {
+                <p>{{ p }}</p>
+              }
+            } @else {
+              <p>No hay contenido disponible.</p>
+            }
+          </div>
+        </section>
       </div>
 
-      <header class="article-header">
-        <a class="back-link" routerLink="/explorar"> <span class="arrow">←</span> Volver al repositorio </a>
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <h3>COMPARTIR</h3>
 
-        <h1>{{ art.title }}</h1>
-
-        <div class="article-meta">
-          <div class="meta-item"><span class="icon">📅</span> {{ art.date }}</div>
-          <span class="dot"></span>
-          <div class="meta-item">
-            <span class="icon">⏱️</span> {{ art.readingTime | readingTime }}
+          <div class="share-buttons">
+            <button (click)="shareTwitter()">𝕏 Twitter</button>
+            <button (click)="shareLinkedIn()">in LinkedIn</button>
+            <button (click)="copyLink()">🔗 Copiar</button>
           </div>
-          <span class="dot"></span>
-          <app-status-badge status="published"></app-status-badge>
         </div>
-      </header>
-
-      <section class="body-section">
-        @if (art.excerpt) {
-          <div class="article-excerpt-container">
-            <p class="article-excerpt">{{ art.excerpt }}</p>
-          </div>
-        }
-
-        <div class="article-body-text">
-          <h2>Introducción</h2>
-          <p>
-            Los modelos de inteligencia artificial han comenzado a transformar el diagnóstico médico en formas que hasta hace poco parecían propias de la ciencia ficción. En la Universidad de Guayaquil, investigadores de la Facultad de Ciencias Médicas han desarrollado un sistema capaz de detectar patologías con una velocidad sin precedentes.
-          </p>
-
-          <blockquote class="accent-quote">
-            <p>"El sistema logró una precisión del 94.3% en la detección temprana de enfermedades cardiovasculares, superando el rendimiento promedio de especialistas humanos en condiciones controladas."</p>
-          </blockquote>
-
-          <h2>Metodología Aplicada</h2>
-          <p>
-            El equipo utilizó redes neuronales convolucionales entrenadas con más de 200,000 imágenes médicas anonimizadas, obtenidas en colaboración con el Hospital Luis Vernaza y el IESS Guayaquil durante un período de dos años de recolección de datos.
-          </p>
-          
-          <p>
-            Esta implementación no busca reemplazar al médico, sino servir como una herramienta de triaje avanzada que priorice los casos más críticos en las salas de emergencia.
-          </p>
-        </div>
-      </section>
+      </aside>
     </div>
   </article>
-} @else {
-  }
+}

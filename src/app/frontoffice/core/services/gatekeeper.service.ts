@@ -30,10 +30,7 @@ export class GatekeeperService {
       expiresIn: 86400,
       visitor: {
         id: crypto.randomUUID(),
-        nombres: form.nombres,
-        apellidos: form.apellidos,
-        correo: form.correo,
-        facultad: form.facultad,
+        nombres: form.nombres || 'Visitante Anónimo',
       },
     };
 

@@ -35,4 +35,24 @@ export class ArticleDetailComponent implements OnInit {
       this.loading.set(false);
     });
   }
+
+  shareTwitter() {
+    const url = window.location.href;
+    const text = this.article()?.title || '';
+
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    window.open(twitterUrl, '_blank');
+  }
+
+  shareLinkedIn() {
+    const url = window.location.href;
+
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    window.open(linkedInUrl, '_blank');
+  }
+
+  copyLink() {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copiado 🚀');
+  }
 }
