@@ -1,5 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* =========================================
-   Variables globales
+  Variables globales
    ========================================= */
 :root {
   --color-primary:       #1e5fa8;
@@ -40,7 +43,7 @@
 }
 
 /* =========================================
-   Reset y base
+  Reset y base
    ========================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -63,7 +66,7 @@ input, textarea, select {
 }
 
 /* =========================================
-   Utilidades comunes
+  Utilidades comunes
    ========================================= */
 .sr-only {
   position: absolute;

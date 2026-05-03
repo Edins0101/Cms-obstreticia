@@ -27,6 +27,11 @@ export const backofficeRoutes: Routes = [
           import('./dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       {
+        path: 'users',
+        loadComponent: () =>
+          import('./users/users').then(m => m.Users)
+      },
+      {
         path: 'pages',
         loadChildren: () =>
           import('./pages/pages.routes').then(m => m.pagesRoutes)
