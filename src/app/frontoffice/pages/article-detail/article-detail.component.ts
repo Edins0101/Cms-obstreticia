@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CmsService } from '../../core/services/cms.service';
 import { Article } from '../../core/models/article.model';
-import { CategoryBadgeComponent } from '../../shared/components/category-badge/category-badge.component';
 import { ReadingTimePipe } from '../../core/pipes/reading-time.pipe';
 import { StatusBadgeComponent } from '../../../backoffice/shared/components/status-badge/status-badge';
 import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner';
@@ -14,7 +13,6 @@ import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner
   imports: [
     CommonModule,
     RouterModule,
-    CategoryBadgeComponent,
     ReadingTimePipe,
     StatusBadgeComponent,
     LoadingSpinnerComponent,
@@ -34,5 +32,25 @@ export class ArticleDetailComponent implements OnInit {
       this.article.set(article);
       this.loading.set(false);
     });
+  }
+
+  shareTwitter() {
+    const url = window.location.href;
+    const text = this.article()?.title || '';
+
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    window.open(twitterUrl, '_blank');
+  }
+
+  shareLinkedIn() {
+    const url = window.location.href;
+
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    window.open(linkedInUrl, '_blank');
+  }
+
+  copyLink() {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copiado 🚀');
   }
 }
