@@ -6,6 +6,7 @@ import { Page } from '../models/page.model';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { SnackbarNotificationService } from '../../../core/shared/snackbar-notification/snackbar-notification.service';
 
 @Component({
   selector: 'app-pages-list',
@@ -15,6 +16,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 })
 export class PagesListComponent {
   private pagesService = inject(PagesService);
+  private snackBarNotification = inject(SnackbarNotificationService);
 
   pages = this.pagesService.pages;
   searchQuery = signal('');
@@ -47,6 +49,7 @@ export class PagesListComponent {
       this.pagesService.delete(page.id);
       this.pageToDelete.set(null);
       this.deleteLoading.set(false);
+      this.snackBarNotification.openCustomNotification('Página eliminada', `La página "${page.title}" ha sido eliminada.`, 'success');
     }, 600);
   }
 }
