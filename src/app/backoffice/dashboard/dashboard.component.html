@@ -10,7 +10,7 @@
 
   <!-- Tarjetas de estadísticas -->
   <div class="stats-grid">
-    @for (stat of stats; track stat.label) {
+    @for (stat of stats(); track stat.label) {
       <div class="stat-card stat-card--{{ stat.color }}">
         <div class="stat-card__body">
           <div>
@@ -68,7 +68,7 @@
       <h2 class="activity-card__title">Actividad reciente</h2>
     </div>
     <ul class="activity-list">
-      @for (activity of recentActivity; track $index) {
+      @for (activity of recentActivity(); track $index) {
         <li class="activity-item">
           <div class="activity-item__avatar">
             {{ activity.user.charAt(0) }}
