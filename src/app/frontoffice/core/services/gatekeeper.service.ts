@@ -4,8 +4,8 @@ import { Observable, tap } from 'rxjs';
 import { GatekeeperForm, GatekeeperResponse } from '../models/gatekeeper.model';
 import { environment } from '../../../../environments/environment';
 
-const TOKEN_KEY   = 'ug_wiki_token';
-const VISITOR_KEY = 'ug_wiki_visitor';
+const TOKEN_KEY    = 'ug_wiki_token';
+const VISITOR_KEY  = 'ug_wiki_visitor';
 const TOKEN_EXPIRY = 'ug_wiki_token_expiry';
 
 @Injectable({ providedIn: 'root' })

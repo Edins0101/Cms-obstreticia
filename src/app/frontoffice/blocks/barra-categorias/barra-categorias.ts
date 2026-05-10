@@ -15,6 +15,7 @@ interface Categoria {
   templateUrl: './barra-categorias.html',
   styleUrls: ['./barra-categorias.scss']
 })
+
 export class BarraCategoriasComponent implements OnInit {
   categorias: Categoria[] = [
     { slug: 'investigacion', nombre: 'Investigación' },

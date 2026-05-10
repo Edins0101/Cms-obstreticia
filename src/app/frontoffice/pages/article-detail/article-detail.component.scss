@@ -3,165 +3,203 @@
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .article-hero {
   width: 100%;
-  height: 300px;
+  height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
 
-  &.investigacion {
-    background: linear-gradient(135deg, #eaf4fb 0%, #d1e9f9 100%);
-  }
-  &.tecnologia {
-    background: linear-gradient(135deg, #fff3e8 0%, #ffe0cc 100%);
-  }
-  &.cultura {
-    background: linear-gradient(135deg, #eef3ee 0%, #d5e4d5 100%);
-  }
+  &.investigacion { background: linear-gradient(135deg, #eaf4fb 0%, #d1e9f9 100%); }
+  &.tecnologia    { background: linear-gradient(135deg, #fff3e8 0%, #ffe0cc 100%); }
+  &.cultura       { background: linear-gradient(135deg, #eef3ee 0%, #d5e4d5 100%); }
 
   .article-emoji {
-    font-size: 100px;
+    font-size: 90px;
     filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
     z-index: 2;
   }
 
   @media (max-width: 768px) {
-    height: 200px;
-    .article-emoji {
-      font-size: 70px;
-    }
+    height: 180px;
+    .article-emoji { font-size: 60px; }
+  }
+}
+
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 2rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: -20px auto 60px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    margin-top: -40px;
   }
 }
 
 .article-content {
-  width: 90%;
-  max-width: 800px;
-  margin: -60px auto 40px;
-  padding: 40px;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  position: relative;
-  box-sizing: border-box;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  min-width: 0; // evita overflow en grid
+}
 
-  .floating-category {
-    position: absolute;
-    top: 35px;
-    right: 40px;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    padding: 4px 0;
-    border-bottom: 2px solid #ccc;
-    color: #718096;
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #3a6fd8;
+  text-decoration: none;
+  margin-bottom: 16px;
 
-    &.investigacion {
-      color: #005ea8;
-      border-color: #005ea8;
-    }
-    &.tecnologia {
-      color: #d97706;
-      border-color: #d97706;
-    }
-    &.cultura {
-      color: #2d6a4f;
-      border-color: #2d6a4f;
-    }
-  }
+  &:hover { text-decoration: underline; }
+}
 
+.floating-category {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+
+  &.investigacion { background: #eaf4fb; color: #3a6fd8; }
+  &.tecnologia    { background: #fff3e8; color: #c05e00; }
+  &.cultura       { background: #eef3ee; color: #2d7a3a; }
+}
+
+.article-header {
   h1 {
-    font-size: 38px;
+    font-size: 32px;
     font-weight: 800;
-    line-height: 1.2;
     color: #1a1a2e;
-    margin-bottom: 20px;
-    max-width: 85%;
+    line-height: 1.25;
+    margin: 0 0 20px;
+    letter-spacing: -0.5px;
   }
+}
 
-  // --- RESPONSIVE PARA EL CONTENIDO ---
-  @media (max-width: 768px) {
-    padding: 25px;
-    margin-top: -30px;
+.article-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
 
-    h1 {
-      font-size: 26px;
-      max-width: 100%;
-    }
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #718096;
+}
 
-    .floating-category {
-      position: static;
-      display: inline-block;
-      margin-bottom: 10px;
-    }
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #cbd5e1;
+}
 
-    .article-meta {
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-  }
-
-  .back-link {
-    color: #005ea8;
-    font-weight: 600;
-    font-size: 14px;
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 24px;
-    &:hover .arrow {
-      transform: translateX(-4px);
-    }
-    .arrow {
-      display: inline-block;
-      transition: transform 0.2s;
-    }
-  }
-
-  .article-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: #718096;
-    font-size: 13px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #edf2f7;
-    .dot {
-      width: 4px;
-      height: 4px;
-      background: #cbd5e0;
-      border-radius: 50%;
-    }
-  }
+.body-section {
+  margin-top: 32px;
 }
 
 .article-excerpt {
-  font-size: 19px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.7;
   color: #4a5568;
   font-weight: 500;
-  margin-top: 30px;
-  border-left: 4px solid #005ea8;
+  border-left: 4px solid #3a6fd8;
   padding-left: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 17px;
-  }
+  margin-bottom: 36px;
+  font-style: italic;
 }
 
 .article-body-text {
-  margin-top: 40px;
-  color: #a0aec0;
-  .placeholder-line {
-    height: 8px;
-    background: #f7fafc;
-    margin: 12px 0;
-    border-radius: 4px;
-    &.short {
-      width: 50%;
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 40px 0 16px;
+    letter-spacing: -0.4px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.85;
+    color: #2d3748;
+    margin-bottom: 24px;
+  }
+}
+
+.article-sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  margin-top: 20px;
+
+  @media (max-width: 900px) {
+    position: static;
+    margin-top: 0;
+  }
+}
+
+.sidebar-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    color: #64748b;
+    font-weight: 700;
+    margin: 0 0 14px;
+  }
+}
+
+.share-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  button {
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
     }
   }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 100px 0;
 }

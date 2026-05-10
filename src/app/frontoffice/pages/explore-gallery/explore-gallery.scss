@@ -127,3 +127,47 @@
     text-shadow: 0 2px 4px rgba(0,0,0,0.2); 
   }
 }
+@media (max-width: 768px) {
+  .explore-container {
+    padding: 10px 20px 40px; // Reducimos padding lateral
+  }
+
+  .page-header {
+    h1 { font-size: 2rem; } // Título más pequeño para que no se corte
+    p { font-size: 1rem; }
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 20px;
+
+    .search-box input {
+      width: 100%; // Input al 100% de ancho
+    }
+
+    .filter-group {
+      flex-direction: column; // Filtros uno debajo del otro
+      align-items: stretch;
+      width: 100%;
+
+      .select-wrapper {
+        justify-content: space-between; // Label a un lado, Select al otro
+        
+        select {
+          flex: 1;
+          max-width: 200px; // Para que no se deforme
+        }
+      }
+    }
+
+    .results-count {
+      text-align: center;
+    }
+  }
+
+  .articles-grid {
+    grid-template-columns: 1fr; // Una sola columna en móvil
+  }
+}

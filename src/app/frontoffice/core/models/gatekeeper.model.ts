@@ -1,8 +1,7 @@
 export interface GatekeeperForm {
-  nombres: string;
-  apellidos: string;
-  correo: string;
-  facultad: string;
+  nombres?: string;
+  edad: number;
+  sexo: string;
 }
 
 export interface GatekeeperResponse {
@@ -11,9 +10,6 @@ export interface GatekeeperResponse {
   visitor: {
     id: string;
     nombres: string;
-    apellidos: string;
-    correo: string;
-    facultad: string;
   };
 }
 

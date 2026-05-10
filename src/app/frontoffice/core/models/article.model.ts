@@ -5,6 +5,7 @@ export interface Article {
   title: string;
   category: ArticleCategory;
   date: string;
+  paragraphs: string[];
   readingTime: number;
   emoji: string;
   excerpt?: string;

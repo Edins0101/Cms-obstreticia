@@ -37,6 +37,11 @@ export const backofficeRoutes: Routes = [
           import('./catalogs/catalogs.routes').then(m => m.catalogsRoutes)
       },
       {
+        path: 'media',
+        loadChildren: () =>
+          import('./multimedia/multimedia.routes').then(m => m.multimediaRoutes)
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'

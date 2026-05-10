@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +21,7 @@ interface NavCategory {
 export class NavbarComponent implements OnInit {
   private router = inject(Router);
   private http = inject(HttpClient);
+  private elementRef = inject(ElementRef);
 
   activeCategory = signal<string>('todos');
   searchQuery = '';
@@ -43,6 +44,7 @@ export class NavbarComponent implements OnInit {
 
   setActive(category: string): void {
     this.activeCategory.set(category);
+    this.menuOpen = false;
     if (category === 'todos') {
       this.router.navigate(['/']);
     }
@@ -52,9 +54,18 @@ export class NavbarComponent implements OnInit {
     const query = this.searchQuery.trim();
     if (!query) return;
     this.router.navigate(['/explorar'], { queryParams: { q: query } });
+    this.menuOpen = false;
   }
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.menuOpen = false;
+    }
   }
 }
