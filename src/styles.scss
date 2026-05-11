@@ -2,46 +2,15 @@
 @use '@angular/material' as mat;
 @include mat.core();
 
-// Agregado por Angular Material para compatibilidad con Material 3. Puedes eliminarlo si no usas Angular Material.
-/*
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
-
-html {
-  @include mat.theme((
-    color: (
-      primary: mat.$magenta-palette,
-      tertiary: mat.$violet-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
-}
-
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
-  margin: 0;
-}
-*/
+/* =========================================
+  Importaciones principales
+   ========================================= */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* =========================================
-   Variables globales
+  Variables globales
    ========================================= */
 :root {
   --color-primary:       #1e5fa8;
@@ -58,17 +27,17 @@ body {
   --color-danger:  #ef4444;
   --color-info:    #3b82f6;
 
-  // Colores para contenedores y acentos de estados (success, error, warning) de snackbar-notification, inspirados en HeroUI, ajustados para mejor contraste y legibilidad.
-  --success-container-color: rgba(5, 40, 20, .7); /* HeroUI - Green900 80% */
-  --success-container-secondary-color: rgba(18, 161, 80, .8); /* HeroUI - Green600 70% */
+  // Colores para contenedores y acentos de estados (success, error, warning) de snackbar-notification
+  --success-container-color: rgba(5, 40, 20, .7);
+  --success-container-secondary-color: rgba(18, 161, 80, .8);
   --success-accent-color: lightgreen;
   --error-container-color: rgba(176, 0, 32, .7);
   --error-container-secondary-color: rgba(176, 0, 32, 1);
-  --error-accent-color: var( --color-danger );
+  --error-accent-color: var(--color-danger);
   --error-text-color: #f5f5f5cc;
-  --warning-container-color: rgba(98, 66, 14, .7); /* HeroUI - Yellow800 */
-  --warning-container-secondary-color: rgba(196, 132, 29, .8); /* HeroUI - Yellow600 */
-  --warning-accent-color: #F9C97C; /* HeroUI - Yellow300 */
+  --warning-container-color: rgba(98, 66, 14, .7);
+  --warning-container-secondary-color: rgba(196, 132, 29, .8);
+  --warning-accent-color: #F9C97C;
 
   --color-bg:        #f0f4f8;
   --color-surface:   #ffffff;
@@ -140,12 +109,11 @@ html, body {
 
 mat-icon {
   font-family: 'Material Symbols Rounded';
-  font-size: var( --font-size-line-height );
-  line-height: var( --font-size-line-height );
+  font-size: var(--font-size-line-height);
+  line-height: var(--font-size-line-height);
 }
 
 // Clases css custom para iconos de snackbar
-
 .custom-snackbar-icon-success, .custom-snackbar-icon-warning {
   & {
     font-size: 26px;
@@ -154,13 +122,13 @@ mat-icon {
 
 .custom-snackbar-icon-success {
   @include mat.icon-overrides((
-    color: var( --color-success )
+    color: var(--color-success)
   ));
 }
 
 .custom-snackbar-icon-error {
   @include mat.icon-overrides((
-    color: var( --color-danger )
+    color: var(--color-danger)
   ));
   & {
     font-size: 32px;
@@ -169,6 +137,6 @@ mat-icon {
 
 .custom-snackbar-icon-warning {
   @include mat.icon-overrides((
-    color: var( --color-warning )
+    color: var(--color-warning)
   ));
 }
