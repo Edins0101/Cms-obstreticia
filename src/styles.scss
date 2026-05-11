@@ -56,6 +56,10 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,.10);
   --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
 
+  --filter-logo-hover: drop-shadow( 0px 0px 2px rgb( 241 227 125 / 70% ) );
+  --filter-logo-transition-out: filter .15s ease .03s, opacity .15s ease .03s;
+  --filter-logo-transition-in: filter .15s ease, opacity .15s ease;
+
   --sidebar-width: 256px;
   --header-height: 64px;
 
