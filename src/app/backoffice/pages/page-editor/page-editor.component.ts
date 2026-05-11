@@ -2,56 +2,76 @@ import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PagesService } from '../services/pages.service';
-import { PageBlock, BlockType } from '../../../frontoffice/blocks/models/block.model';
+import { PageBlock, BlockType } from '../../../frontoffice/core/models/block.model';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
 
 type EditorMode = 'new' | 'edit';
 
-interface BlockOption { type: BlockType; label: string; description: string; icon: string; }
+interface BlockOption {
+  type: BlockType;
+  label: string;
+  description: string;
+  icon: string;
+}
 
 @Component({
   selector: 'app-page-editor',
   imports: [ReactiveFormsModule, RouterLink, PageHeaderComponent],
   templateUrl: './page-editor.component.html',
-  styleUrl: './page-editor.component.scss'
+  styleUrl: './page-editor.component.scss',
 })
 export class PageEditorComponent implements OnInit {
-  private fb      = inject(FormBuilder);
-  private route   = inject(ActivatedRoute);
-  private router  = inject(Router);
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private service = inject(PagesService);
 
-  mode         = signal<EditorMode>('new');
-  pageId       = signal<string | null>(null);
-  saving       = signal(false);
-  saved        = signal(false);
-  blocks       = signal<PageBlock[]>([]);
-  showPicker   = signal(false);
-  expandedBlock= signal<string | null>(null);
+  mode = signal<EditorMode>('new');
+  pageId = signal<string | null>(null);
+  saving = signal(false);
+  saved = signal(false);
+  blocks = signal<PageBlock[]>([]);
+  showPicker = signal(false);
+  expandedBlock = signal<string | null>(null);
 
   form = this.fb.group({
-    title:       ['', [Validators.required, Validators.minLength(3)]],
-    slug:        ['', Validators.required],
-    status:      ['draft' as 'published' | 'draft' | 'archived'],
-    description: ['']
+    title: ['', [Validators.required, Validators.minLength(3)]],
+    slug: ['', Validators.required],
+    status: ['draft' as 'published' | 'draft' | 'archived'],
+    description: [''],
   });
 
   blockOptions: BlockOption[] = [
-    { type: 'hero',       label: 'Hero',          description: 'Banner principal con título y CTA',  icon: 'hero'    },
-    { type: 'text',       label: 'Texto',          description: 'Bloque de contenido HTML',            icon: 'text'    },
-    { type: 'image',      label: 'Imagen',         description: 'Imagen con pie de foto opcional',     icon: 'image'   },
-    { type: 'cards-grid', label: 'Tarjetas',       description: 'Cuadrícula de tarjetas informativas', icon: 'cards'   },
-    { type: 'cta',        label: 'Call to Action', description: 'Sección de llamada a la acción',      icon: 'cta'     },
+    { type: 'hero', label: 'Hero', description: 'Banner principal con título y CTA', icon: 'hero' },
+    { type: 'text', label: 'Texto', description: 'Bloque de contenido HTML', icon: 'text' },
+    {
+      type: 'image',
+      label: 'Imagen',
+      description: 'Imagen con pie de foto opcional',
+      icon: 'image',
+    },
+    {
+      type: 'cards-grid',
+      label: 'Tarjetas',
+      description: 'Cuadrícula de tarjetas informativas',
+      icon: 'cards',
+    },
+    {
+      type: 'cta',
+      label: 'Call to Action',
+      description: 'Sección de llamada a la acción',
+      icon: 'cta',
+    },
   ];
 
   headerTitle = computed(() =>
-    this.mode() === 'new' ? 'Nueva página' : `Editar: ${this.form.value.title || '...'}`
+    this.mode() === 'new' ? 'Nueva página' : `Editar: ${this.form.value.title || '...'}`,
   );
 
   breadcrumbs = computed(() => [
-    { label: 'Inicio',   route: '/admin/dashboard' },
-    { label: 'Páginas',  route: '/admin/pages'     },
-    { label: this.mode() === 'new' ? 'Nueva' : 'Editar' }
+    { label: 'Inicio', route: '/admin/dashboard' },
+    { label: 'Páginas', route: '/admin/pages' },
+    { label: this.mode() === 'new' ? 'Nueva' : 'Editar' },
   ]);
 
   ngOnInit(): void {
@@ -62,15 +82,17 @@ export class PageEditorComponent implements OnInit {
       const page = this.service.getById(id)();
       if (page) {
         this.form.patchValue({
-          title: page.title, slug: page.slug,
-          status: page.status, description: page.description ?? ''
+          title: page.title,
+          slug: page.slug,
+          status: page.status,
+          description: page.description ?? '',
         });
         this.blocks.set([...page.blocks]);
       }
     }
 
     // Auto-slug desde el título (solo en modo nuevo)
-    this.form.get('title')!.valueChanges.subscribe(title => {
+    this.form.get('title')!.valueChanges.subscribe((title) => {
       if (this.mode() === 'new' && title) {
         this.form.get('slug')!.setValue(this.service.slugify(title), { emitEvent: false });
       }
@@ -82,18 +104,18 @@ export class PageEditorComponent implements OnInit {
   addBlock(type: BlockType): void {
     const id = `block-${Date.now()}`;
     const newBlock = this.buildDefaultBlock(id, type);
-    this.blocks.update(b => [...b, newBlock]);
+    this.blocks.update((b) => [...b, newBlock]);
     this.showPicker.set(false);
     this.expandedBlock.set(id);
   }
 
   removeBlock(id: string): void {
-    this.blocks.update(b => b.filter(bl => bl.id !== id));
+    this.blocks.update((b) => b.filter((bl) => bl.id !== id));
     if (this.expandedBlock() === id) this.expandedBlock.set(null);
   }
 
   toggleBlock(id: string): void {
-    this.expandedBlock.update(cur => cur === id ? null : id);
+    this.expandedBlock.update((cur) => (cur === id ? null : id));
   }
 
   moveBlock(index: number, dir: -1 | 1): void {
@@ -105,21 +127,22 @@ export class PageEditorComponent implements OnInit {
   }
 
   updateBlockData(id: string, patch: Record<string, unknown>): void {
-    this.blocks.update(arr =>
-      arr.map(b => b.id === id ? { ...b, data: { ...(b as any).data, ...patch } } : b)
+    this.blocks.update((arr) =>
+      arr.map((b) => (b.id === id ? { ...b, data: { ...(b as any).data, ...patch } } : b)),
     );
   }
 
   toggleBlockVisibility(id: string): void {
-    this.blocks.update(arr =>
-      arr.map(b => b.id === id ? { ...b, visible: !b.visible } : b)
-    );
+    this.blocks.update((arr) => arr.map((b) => (b.id === id ? { ...b, visible: !b.visible } : b)));
   }
 
   // ── Guardar ──────────────────────────────────────────────────
 
   onSave(): void {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.saving.set(true);
 
     const formData = this.form.value as any;
@@ -146,7 +169,7 @@ export class PageEditorComponent implements OnInit {
   }
 
   blockLabel(type: BlockType): string {
-    return this.blockOptions.find(o => o.type === type)?.label ?? type;
+    return this.blockOptions.find((o) => o.type === type)?.label ?? type;
   }
 
   // ── Builder bloques por defecto ───────────────────────────────
@@ -155,15 +178,58 @@ export class PageEditorComponent implements OnInit {
     const order = this.blocks().length + 1;
     switch (type) {
       case 'hero':
-        return { id, type, visible: true, order, data: { title: 'Nuevo hero', subtitle: '', ctaLabel: '', ctaRoute: '/', overlay: false } };
+        return {
+          id,
+          type,
+          visible: true,
+          order,
+          data: { title: 'Nuevo hero', subtitle: '', ctaLabel: '', ctaRoute: '/', overlay: false },
+        };
       case 'text':
-        return { id, type, visible: true, order, data: { title: '', html: '<p>Contenido aquí...</p>', align: 'left' } };
+        return {
+          id,
+          type,
+          visible: true,
+          order,
+          data: { title: '', html: '<p>Contenido aquí...</p>', align: 'left' },
+        };
       case 'image':
-        return { id, type, visible: true, order, data: { src: '', alt: '', caption: '', fullWidth: false } };
+        return {
+          id,
+          type,
+          visible: true,
+          order,
+          data: { src: '', alt: '', caption: '', fullWidth: false },
+        };
       case 'cards-grid':
-        return { id, type, visible: true, order, data: { title: '', subtitle: '', columns: 3, cards: [{ title: 'Tarjeta 1', description: 'Descripción' }] } };
+        return {
+          id,
+          type,
+          visible: true,
+          order,
+          data: {
+            title: '',
+            subtitle: '',
+            columns: 3,
+            cards: [{ title: 'Tarjeta 1', description: 'Descripción' }],
+          },
+        };
       case 'cta':
-        return { id, type, visible: true, order, data: { title: 'Título CTA', description: '', primaryLabel: 'Ver más', primaryRoute: '/', variant: 'primary' } };
+        return {
+          id,
+          type,
+          visible: true,
+          order,
+          data: {
+            title: 'Título CTA',
+            description: '',
+            primaryLabel: 'Ver más',
+            primaryRoute: '/',
+            variant: 'primary',
+          },
+        };
+      default:
+        throw new Error(`Tipo de bloque desconocido: ${type}`);
     }
   }
 }

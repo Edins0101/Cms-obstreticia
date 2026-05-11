@@ -1,0 +1,56 @@
+<div class="explore-gallery-container">
+  <nav class="navigation-wrapper">
+    <a routerLink="/" class="back-link">← Volver al inicio</a>
+  </nav>
+
+  <header class="main-header">
+    <div class="header-content">
+      <h1>Galería de Contenidos</h1>
+      <p class="subtitle">Explora los temas académicos de la universidad.</p>
+    </div>
+  </header>
+
+  <section class="toolbar">
+    <div class="search-box">
+      <input 
+        type="text" 
+        placeholder="Buscar tema..." 
+        [ngModel]="searchQuery()" 
+        (ngModelChange)="updateSearch($event)">
+    </div>
+
+    <div class="filter-group">
+      <label for="gallery-sort">Ordenar por:</label>
+      <select id="gallery-sort" [ngModel]="selectedSort()" (change)="updateSort($any($event.target).value)">
+        <option value="todas">Todos (orden original)</option>
+        <optgroup label="Cronología">
+          <option value="recientes">Más recientes primero</option>
+          <option value="antiguas">Más antiguos primero</option>
+        </optgroup>
+        <optgroup label="Alfabético">
+          <option value="az">De la A a la Z</option>
+          <option value="za">De la Z a la A</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="results-count">
+      {{ filteredCategories().length }} temas encontrados
+    </div>
+  </section>
+
+  <main class="gallery-grid">
+    @for (item of filteredCategories(); track item.id) {
+      <div class="category-card" 
+           [style.background]="item.gradient" 
+           [routerLink]="['/categoria', item.id]">
+        <span class="icon">{{ item.icon }}</span>
+        <h3>{{ item.name }}</h3>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No se encontraron temas para "{{ searchQuery() }}"</p>
+      </div>
+    }
+  </main>
+</div>

@@ -1,4 +1,4 @@
-import { PageBlock } from '../../../frontoffice/blocks/models/block.model';
+import { PageBlock } from '../../../frontoffice/core/models/block.model';
 
 export type PageStatus = 'published' | 'draft' | 'archived';
 

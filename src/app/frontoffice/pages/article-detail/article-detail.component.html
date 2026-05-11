@@ -1,0 +1,69 @@
+@if (loading()) {
+  <div class="loading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+} @else if (article(); as art) {
+  <article class="article-page">
+    <div class="article-hero" [ngClass]="art.category">
+      <div class="hero-overlay">
+        <span class="article-emoji">{{ art.emoji }}</span>
+      </div>
+    </div>
+
+    <div class="article-layout">
+      <div class="article-content">
+        <div class="floating-category" [ngClass]="art.category">
+          {{ art.category | uppercase }}
+        </div>
+
+        <header class="article-header">
+          <a class="back-link" routerLink="/explorar">
+            <span class="arrow">←</span> Volver al repositorio
+          </a>
+
+          <h1>{{ art.title }}</h1>
+
+          <div class="article-meta">
+            <div class="meta-item"><span class="icon">📅</span> {{ art.date }}</div>
+            <span class="dot"></span>
+            <div class="meta-item">
+              <span class="icon">⏱️</span> {{ art.readingTime | readingTime }}
+            </div>
+            <span class="dot"></span>
+            <app-status-badge status="published"></app-status-badge>
+          </div>
+        </header>
+
+        <section class="body-section">
+          @if (art.excerpt) {
+            <div class="article-excerpt-container">
+              <p class="article-excerpt">{{ art.excerpt }}</p>
+            </div>
+          }
+
+          <div class="article-body-text">
+            @if (art.paragraphs.length) {
+              @for (p of art.paragraphs; track $index) {
+                <p>{{ p }}</p>
+              }
+            } @else {
+              <p>No hay contenido disponible.</p>
+            }
+          </div>
+        </section>
+      </div>
+
+      <aside class="article-sidebar">
+        <div class="sidebar-card">
+          <h3>COMPARTIR</h3>
+
+          <div class="share-buttons">
+            <button (click)="shareTwitter()">𝕏 Twitter</button>
+            <button (click)="shareLinkedIn()">in LinkedIn</button>
+            <button (click)="copyLink()">🔗 Copiar</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </article>
+}

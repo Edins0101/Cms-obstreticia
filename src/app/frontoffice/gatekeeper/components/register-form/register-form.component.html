@@ -1,0 +1,62 @@
+<div class="register-form" [formGroup]="form">
+  <div class="form-header">
+    <div class="logo-icon">🎓</div>
+    <div class="form-header-text">
+      <strong>Universidad de Guayaquil</strong>
+      <span>WIKI VISUAL · CMS</span>
+    </div>
+  </div>
+
+  <h1>Bienvenido al Portal</h1>
+  <p class="form-subtitle">Completa los siguientes datos para continuar.</p>
+
+  <div class="error-banner" *ngIf="error()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
+    {{ error() }}
+  </div>
+
+  <!-- NOMBRES (OPCIONAL) -->
+  <div class="field">
+    <label>Nombres (opcional)</label>
+    <input
+      type="text"
+      formControlName="nombres"
+      placeholder="Tu nombre"
+      autocomplete="given-name"
+    />
+  </div>
+
+  <!-- EDAD (OBLIGATORIO) -->
+  <div class="field" [class.invalid]="isInvalid('edad')">
+    <label>Edad</label>
+    <input type="number" formControlName="edad" placeholder="Tu edad" min="1" />
+    <span class="field-error" *ngIf="isInvalid('edad')"> Ingresa una edad válida </span>
+  </div>
+
+  <!-- SEXO (OBLIGATORIO) -->
+  <div class="field" [class.invalid]="isInvalid('sexo')">
+    <label>Sexo</label>
+    <select formControlName="sexo">
+      <option value="" disabled>Seleccionar...</option>
+      <option value="masculino">Masculino</option>
+      <option value="femenino">Femenino</option>
+      <option value="otro">Otro</option>
+    </select>
+    <span class="field-error" *ngIf="isInvalid('sexo')"> Selecciona una opción </span>
+  </div>
+
+  <button
+    type="button"
+    class="btn-submit"
+    [class.loading]="loading()"
+    [disabled]="loading()"
+    (click)="onSubmit()"
+  >
+    <span *ngIf="!loading()">Ingresar al Portal →</span>
+    <span *ngIf="loading()" class="btn-spinner"></span>
+  </button>
+</div>

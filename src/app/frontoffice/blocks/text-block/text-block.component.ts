@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { TextBlock } from '../models/block.model';
+import { TextBlock } from '../../core/models/block.model';
 
 @Component({
   selector: 'app-text-block',
@@ -12,29 +12,35 @@ import { TextBlock } from '../models/block.model';
       <div class="text-block__body" [innerHTML]="block().data.html"></div>
     </section>
   `,
-  styles: [`
-    .text-block {
-      padding: 3rem 2rem;
-      max-width: 860px;
-      margin: 0 auto;
+  styles: [
+    `
+      .text-block {
+        padding: 3rem 2rem;
+        max-width: 860px;
+        margin: 0 auto;
 
-      &--center { text-align: center; }
-      &--right  { text-align: right; }
+        &--center {
+          text-align: center;
+        }
+        &--right {
+          text-align: right;
+        }
 
-      &__title {
-        font-size: 1.875rem;
-        font-weight: 700;
-        color: #1e293b;
-        margin-bottom: 1rem;
+        &__title {
+          font-size: 1.875rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin-bottom: 1rem;
+        }
+
+        &__body {
+          font-size: 1rem;
+          line-height: 1.8;
+          color: #334155;
+        }
       }
-
-      &__body {
-        font-size: 1rem;
-        line-height: 1.8;
-        color: #334155;
-      }
-    }
-  `]
+    `,
+  ],
 })
 export class TextBlockComponent {
   block = input.required<TextBlock>();

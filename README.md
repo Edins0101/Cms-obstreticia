@@ -97,7 +97,7 @@ Cms-obstreticia/
 │   │       ├── frontoffice.routes.ts
 │   │       │
 │   │       ├── home/                # Página de inicio pública
-│   │       │   └── home.component.ts
+│   │       │   └── .component.ts
 │   │       │
 │   │       └── blocks/              # Sistema de bloques de contenido CMS
 │   │           ├── models/
@@ -124,7 +124,7 @@ Cms-obstreticia/
 
 | URL | Acceso | Descripción |
 |---|---|---|
-| `/` | Público | Sitio público — renderiza bloques de la home |
+| `/` | Público | Sitio público — renderiza bloques de la  |
 | `/admin/login` | Público | Inicio de sesión del panel |
 | `/admin/dashboard` | Privado | Dashboard principal con estadísticas |
 | `/admin/pages` | Privado | Gestión de páginas y contenido por bloques |
