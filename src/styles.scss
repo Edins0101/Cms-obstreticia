@@ -1,16 +1,16 @@
-/* =========================================
-   Importaciones principales
-   ========================================= */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 // Using e include necesarios para componentes que usan angular material como el snackbar-notification.
 @use '@angular/material' as mat;
 @include mat.core();
 
 /* =========================================
-   Variables globales
+  Importaciones principales
+   ========================================= */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================
+  Variables globales
    ========================================= */
 :root {
   --color-primary:       #1e5fa8;
