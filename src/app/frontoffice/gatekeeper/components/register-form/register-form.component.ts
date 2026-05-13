@@ -59,4 +59,8 @@ export class RegisterFormComponent {
   toggleModal(estado: boolean) {
     this.showModalPrivacidad = estado;
   }
+
+  soloNumeros(event: KeyboardEvent): boolean {
+  return /[0-9]/.test(event.key);
+}
 }

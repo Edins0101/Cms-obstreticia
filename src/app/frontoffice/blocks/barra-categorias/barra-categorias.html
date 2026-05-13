@@ -14,15 +14,17 @@
           Todos
         </button>
       </li>
-      <li *ngFor="let cat of categorias">
-        <button
-          class="nav-btn"
-          [class.active]="categoriaActiva === cat.slug"
-          (click)="navegarACategoria(cat.slug)"
-        >
-          {{ cat.nombre }}
-        </button>
-      </li>
+      @for (cat of categorias; track cat.categoryId) {
+        <li>
+          <button
+            class="nav-btn"
+            [class.active]="categoriaActiva === cat.slug"
+            (click)="navegarACategoria(cat.slug)"
+          >
+            {{ cat.name }}
+          </button>
+        </li>
+      }
     </ul>
   </nav>
 

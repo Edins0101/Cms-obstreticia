@@ -22,7 +22,7 @@ export class SidebarComponent {
     { label: 'Páginas',       icon: 'pages',     route: '/admin/pages'     },
     { label: 'Catálogos',     icon: 'catalogs',  route: '/admin/catalogs'  },
     { label: 'Multimedia',    icon: 'media',     route: '/admin/media'     },
-    { label: 'Usuarios',      icon: 'users',     route: '/admin/users'     },
-    { label: 'Configuración', icon: 'settings',  route: '/admin/settings'  },
+    //{ label: 'Usuarios',      icon: 'users',     route: '/admin/users'     },
+    //{ label: 'Configuración', icon: 'settings',  route: '/admin/settings'  },
   ];
 }

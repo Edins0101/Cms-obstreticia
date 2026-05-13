@@ -11,4 +11,5 @@ export interface Article {
   excerpt?: string;
   featured?: boolean;
   imageUrl?: string;
+  contentHtml?: string;
 }

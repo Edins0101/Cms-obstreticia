@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { filter } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 
 interface Categoria {
+  categoryId: number;
   slug: string;
-  nombre: string;
+  name: string;
 }
 
 @Component({
@@ -15,27 +18,23 @@ interface Categoria {
   templateUrl: './barra-categorias.html',
   styleUrls: ['./barra-categorias.scss']
 })
-
 export class BarraCategoriasComponent implements OnInit {
-  categorias: Categoria[] = [
-    { slug: 'investigacion', nombre: 'Investigación' },
-    { slug: 'tecnologia', nombre: 'Tecnología' },
-    { slug: 'cultura', nombre: 'Cultura' },
-    { slug: 'eventos', nombre: 'Eventos' },
-    { slug: 'proyectos', nombre: 'Proyectos' }
-  ];
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private http = inject(HttpClient);
 
+  categorias: Categoria[] = [];
   categoriaActiva: string | null = null;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
-
   ngOnInit(): void {
+    this.http
+      .get<Categoria[]>(`${environment.apiUrl}/Categories`)
+      .subscribe(cats => this.categorias = cats);
+
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => this.actualizarCategoriaActiva());
+
     this.actualizarCategoriaActiva();
   }
 

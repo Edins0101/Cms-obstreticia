@@ -1,16 +1,16 @@
 .explore-gallery-container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 20px 40px 80px; 
+  padding: 20px 40px 80px;
 }
 
 .navigation-wrapper {
   display: flex;
   justify-content: flex-start;
-  padding: 20px 0; 
+  padding: 20px 0;
 
   .back-link {
-    color: #0056b3 !important; 
+    color: #0056b3 !important;
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
@@ -26,8 +26,8 @@
 }
 
 .main-header {
-  text-align: center; 
-  padding: 40px 0 60px; 
+  text-align: center;
+  padding: 40px 0 60px;
 
   .header-content {
     max-width: 800px;
@@ -35,7 +35,7 @@
   }
 
   h1 {
-    font-size: 48px; 
+    font-size: 48px;
     color: #1a1a2e;
     font-weight: 700;
     margin-bottom: 16px;
@@ -53,7 +53,7 @@
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 32px; 
+  gap: 32px;
 }
 
 .toolbar {
@@ -90,7 +90,7 @@
       cursor: pointer;
       font-size: 14px;
       color: #1e293b;
-      
+
       optgroup { font-weight: 700; color: #64748b; }
     }
   }
@@ -100,31 +100,33 @@
 
 .category-card {
   height: 180px;
-  border-radius: 24px; 
+  border-radius: 24px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  position: relative;    // ← agrega esto
+  overflow: hidden;       // ← agrega esto
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12); 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
   }
 
   .icon {
     font-size: 32px;
-    align-self: flex-end; 
+    align-self: flex-end;
   }
 
   h3 {
-    color: white; 
+    color: white;
     font-size: 18px;
     font-weight: 700;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
 }
 @media (max-width: 768px) {
@@ -154,7 +156,7 @@
 
       .select-wrapper {
         justify-content: space-between; // Label a un lado, Select al otro
-        
+
         select {
           flex: 1;
           max-width: 200px; // Para que no se deforme

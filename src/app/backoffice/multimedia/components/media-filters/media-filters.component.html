@@ -41,15 +41,6 @@
       }
     </button>
 
-    <!-- Tipo -->
-    <select class="mf-select"
-            [value]="media.filters().type"
-            (change)="onTypeChange($any($event.target).value)">
-      @for (opt of typeOptions; track opt.value) {
-        <option [value]="opt.value">{{ opt.label }}</option>
-      }
-    </select>
-
     <!-- Toggle grid / list -->
     <div class="mf-view-toggle">
       <button class="mf-icon-btn"

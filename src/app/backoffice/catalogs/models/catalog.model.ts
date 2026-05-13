@@ -27,6 +27,7 @@ export interface Catalog {
   items: CatalogItem[];
   createdAt: Date;
   updatedAt: Date;
+  imageUrl?: string;
 }
 
 export interface CatalogFormData {
@@ -37,6 +38,7 @@ export interface CatalogFormData {
   visibility: CatalogVisibility;
   theme: CatalogTheme;
   itemLabel: string;
+  imageUrl?: string;
 }
 
 export interface CatalogItemFormData {

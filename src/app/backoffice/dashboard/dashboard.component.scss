@@ -47,6 +47,16 @@
   border: 1px solid var(--color-border);
   overflow: hidden;
   transition: box-shadow var(--transition), transform var(--transition);
+  position: relative;
+
+  // Barra superior de color
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
 
   &:hover {
     box-shadow: var(--shadow-md);
@@ -57,7 +67,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 1.25rem;
+    padding: 1.5rem 1.25rem 1.25rem;
   }
 
   &__label {
@@ -68,8 +78,8 @@
   }
 
   &__value {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.25rem;
+    font-weight: 800;
     color: var(--color-text);
     line-height: 1;
     margin-bottom: .5rem;
@@ -87,20 +97,24 @@
     &--neutral { color: var(--color-text-muted); }
   }
 
-  &__icon {
-    width: 48px; height: 48px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
+  &__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 
-  /* Variantes de color */
-  &--blue   .stat-card__icon { background: #dbeafe; color: #1e5fa8; }
-  &--teal   .stat-card__icon { background: #ccfbf1; color: #0d9488; }
-  &--purple .stat-card__icon { background: #ede9fe; color: #7c3aed; }
-  &--orange .stat-card__icon { background: #ffedd5; color: #ea580c; }
+&__img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.10));
+  transition: transform var(--transition);
+}
+
+&:hover &__img {
+  transform: scale(1.08);
+}
 }
 
 /* ---- Activity card ---- */

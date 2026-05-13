@@ -1,9 +1,13 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { PageFormData } from '../models/page.model';
+import { environment } from '../../../../environments/environment';
 import { PagesService } from '../services/pages.service';
 import { PageBlock, BlockType } from '../../../frontoffice/core/models/block.model';
 import { PageHeaderComponent } from '../../shared/components/page-header/page-header.component';
+
 
 type EditorMode = 'new' | 'edit';
 
@@ -25,6 +29,9 @@ export class PageEditorComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private service = inject(PagesService);
+  private http = inject(HttpClient);
+  private api = environment.apiUrl;
+  categories = signal<any[]>([]);
 
   mode = signal<EditorMode>('new');
   pageId = signal<string | null>(null);
@@ -39,6 +46,8 @@ export class PageEditorComponent implements OnInit {
     slug: ['', Validators.required],
     status: ['draft' as 'published' | 'draft' | 'archived'],
     description: [''],
+    categoryId: [null as number | null],
+    featured: [false]
   });
 
   blockOptions: BlockOption[] = [
@@ -62,6 +71,12 @@ export class PageEditorComponent implements OnInit {
       description: 'Sección de llamada a la acción',
       icon: 'cta',
     },
+    {
+      type: 'video' as BlockType,
+      label: 'Video YouTube',
+      description: 'Embed de video de YouTube',
+      icon: 'video'
+    },
   ];
 
   headerTitle = computed(() =>
@@ -75,29 +90,51 @@ export class PageEditorComponent implements OnInit {
   ]);
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.mode.set('edit');
-      this.pageId.set(id);
-      const page = this.service.getById(id)();
-      if (page) {
-        this.form.patchValue({
-          title: page.title,
-          slug: page.slug,
-          status: page.status,
-          description: page.description ?? '',
-        });
-        this.blocks.set([...page.blocks]);
-      }
-    }
+  const id = this.route.snapshot.paramMap.get('id');
 
-    // Auto-slug desde el título (solo en modo nuevo)
-    this.form.get('title')!.valueChanges.subscribe((title) => {
-      if (this.mode() === 'new' && title) {
-        this.form.get('slug')!.setValue(this.service.slugify(title), { emitEvent: false });
-      }
-    });
+  this.http.get<any[]>(`${environment.apiUrl}/Categories`)
+    .subscribe(cats => this.categories.set(cats));
+
+  if (id) {
+    this.mode.set('edit');
+    this.pageId.set(id);
+
+    // Cargar directo del backend para tener categoryId
+    this.http.get<any>(`${environment.apiUrl}/Articles/admin/${id}`)
+      .subscribe(article => {
+        // Buscar el categoryId comparando el slug de category con las categorías
+        this.categories().forEach(() => {}); // esperar categorías...
+
+        // Cargar categorías y artículo juntos
+        this.http.get<any[]>(`${environment.apiUrl}/Categories`).subscribe(cats => {
+          this.categories.set(cats);
+          const matchedCat = cats.find(c => c.slug === article.category);
+
+          this.form.patchValue({
+            title: article.title,
+            slug: (article.slug ?? '').replace(/^\/+/, ''),
+            status: article.statusName === 'Published' ? 'published' : 'draft',
+            description: article.excerpt ?? '',
+            categoryId: matchedCat?.categoryId ?? null,
+            featured: article.featured ?? false
+          });
+        });
+
+        // Cargar bloques
+        if (article.blocksJson) {
+          try {
+            this.blocks.set(JSON.parse(article.blocksJson));
+          } catch { this.blocks.set([]); }
+        }
+      });
   }
+
+  this.form.get('title')!.valueChanges.subscribe((title) => {
+    if (this.mode() === 'new' && title) {
+      this.form.get('slug')!.setValue(this.service.slugify(title), { emitEvent: false });
+    }
+  });
+}
 
   // ── Bloques ──────────────────────────────────────────────────
 
@@ -139,29 +176,120 @@ export class PageEditorComponent implements OnInit {
   // ── Guardar ──────────────────────────────────────────────────
 
   onSave(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    this.saving.set(true);
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
+  this.saving.set(true);
 
-    const formData = this.form.value as any;
+  const formData = this.form.value as PageFormData;
 
-    setTimeout(() => {
-      if (this.mode() === 'new') {
-        const page = this.service.create(formData);
-        this.service.updateBlocks(page.id, this.blocks());
-        this.router.navigate(['/admin/pages', page.id, 'edit']);
-      } else {
-        this.service.update(this.pageId()!, formData);
-        this.service.updateBlocks(this.pageId()!, this.blocks());
+  // Convertir TODOS los bloques a contentHtml
+  const contentHtml = this.service.blocksToHtml(this.blocks()) || '<p></p>';
+
+  if (this.mode() === 'new') {
+    const body = {
+      title: formData.title,
+      slug: (formData.slug ?? '').replace(/^\/+/, ''),  // ← quita el / inicial
+      contentHtml,
+      blocksJson: JSON.stringify(this.blocks()),
+      excerpt: formData.description ?? '',
+      emoji: '📄',
+      readingTime: 1,
+      featured: formData.featured ?? false,
+      categoryIds: formData.categoryId ? [Number(formData.categoryId)] : [] as number[]
+    };
+
+    this.http.post<any>(`${this.api}/Articles/admin`, body).subscribe({
+      next: article => {
+        if (formData.status === 'published') {
+          this.http.patch(`${this.api}/Articles/admin/${article.id}/status`,
+            { statusId: 2 }).subscribe();
+        }
+        this.saving.set(false);
+        this.saved.set(true);
+        this.router.navigate(['/admin/pages', article.id, 'edit']);
+        setTimeout(() => this.saved.set(false), 2500);
+      },
+      error: () => this.saving.set(false)
+    });
+  } else {
+  const body = {
+    title: formData.title,
+    slug: (formData.slug ?? '').replace(/^\/+/, ''),  // ← quita el / inicial
+    contentHtml,
+    blocksJson: JSON.stringify(this.blocks()),
+    excerpt: formData.description ?? '',
+    emoji: '📄',
+    readingTime: 1,
+    featured: formData.featured ?? false,
+    categoryIds: formData.categoryId ? [Number(formData.categoryId)] : [] as number[]  // ← fix
+  };
+  console.log('PUT body:', JSON.stringify(body, null, 2));
+  console.log('featured value:', this.form.get('featured')?.value);
+  this.http.put(`${this.api}/Articles/admin/${this.pageId()}`, body).subscribe({
+    next: () => {
+      if (formData.status !== undefined) {
+        const statusId = formData.status === 'published' ? 2 : 1;
+        this.http.patch(`${this.api}/Articles/admin/${this.pageId()}/status`,
+          { statusId }).subscribe();
       }
       this.saving.set(false);
       this.saved.set(true);
-      this.mode.set('edit');
       setTimeout(() => this.saved.set(false), 2500);
-    }, 700);
-  }
+    },
+    error: () => this.saving.set(false)
+  });
+}
+}
+
+private blocksToHtml(blocks: any[]): string {
+  return blocks
+    .filter((b: any) => b.visible)
+    .sort((a: any, b: any) => a.order - b.order)
+    .map((b: any) => {
+      const data = b.data;
+      switch (b.type) {
+        case 'text':
+          return data.html ?? '';
+        case 'video':
+          const videoId = data.url?.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)?.[1];
+          if (!videoId) return '';
+          return `<div class="video-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:1rem 0">
+            <iframe src="https://www.youtube.com/embed/${videoId}"
+              style="position:absolute;top:0;left:0;width:100%;height:100%"
+              frameborder="0" allowfullscreen></iframe>
+          </div>`;
+        case 'image':
+          return `<figure style="margin:1rem 0">
+            <img src="${data.src}" alt="${data.alt ?? ''}" style="max-width:100%;border-radius:8px" />
+            ${data.caption ? `<figcaption>${data.caption}</figcaption>` : ''}
+          </figure>`;
+        case 'hero':
+          return `<h1>${data.title ?? ''}</h1>${data.subtitle ? `<p>${data.subtitle}</p>` : ''}`;
+        case 'cards-grid':
+          return `<h2>${data.title ?? ''}</h2>
+            <div style="display:grid;grid-template-columns:repeat(${data.columns ?? 3},1fr);gap:1rem">
+              ${(data.cards ?? []).map((c: any) => `
+                <div style="padding:1rem;border:1px solid #eee;border-radius:8px">
+                  <strong>${c.title}</strong>
+                  <p>${c.description}</p>
+                </div>`).join('')}
+            </div>`;
+        case 'cta':
+          return `<div style="padding:2rem;text-align:center;background:#f0f4f8;border-radius:8px;margin:1rem 0">
+            <h2>${data.title}</h2>
+            ${data.description ? `<p>${data.description}</p>` : ''}
+            <a href="${data.primaryRoute}" style="display:inline-block;padding:0.75rem 1.5rem;background:#1e5fa8;color:white;border-radius:6px;text-decoration:none">
+              ${data.primaryLabel}
+            </a>
+          </div>`;
+        default:
+          return '';
+      }
+    })
+    .join('\n');
+}
 
   fieldError(field: string, error: string): boolean {
     const ctrl = this.form.get(field);
@@ -227,6 +355,14 @@ export class PageEditorComponent implements OnInit {
             primaryRoute: '/',
             variant: 'primary',
           },
+        };
+        case 'video':
+        return {
+          id,
+          type,
+          visible: true,
+          order,
+          data: { url: '', title: '' }
         };
       default:
         throw new Error(`Tipo de bloque desconocido: ${type}`);

@@ -1,22 +1,37 @@
-<ng-container [ngSwitch]="block.type">
+@switch (block.type) {
 
-  <app-hero-block
-    *ngSwitchCase="'hero'"
-    [data]="heroData"
-  />
+  @case ('hero') {
+    <app-hero-block [data]="heroData" />
+  }
 
-  <app-cards-grid
-    *ngSwitchCase="'cards-grid'"
-    [data]="cardsData"
-  />
+  @case ('cards-grid') {
+    <app-cards-grid [data]="cardsData" />
+  }
 
-  <app-gallery-grid
-    *ngSwitchCase="'gallery-grid'"
-    [data]="galleryData"
-  />
+  @case ('gallery-grid') {
+    <app-gallery-grid [data]="galleryData" />
+  }
 
-  <div *ngSwitchDefault class="block-unknown">
-    Bloque desconocido: {{ block.type }}
-  </div>
+  @case ('video') {
+    <div class="video-block">
+      @if (videoTitle) {
+        <h3 class="video-block__title">{{ videoTitle }}</h3>
+      }
+      @if (videoUrl) {
+        <div class="video-block__wrapper">
+          <iframe
+            [src]="videoUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      }
+    </div>
+  }
 
-</ng-container>
+  @default {
+    <div class="block-unknown">Bloque desconocido: {{ block.type }}</div>
+  }
+
+}

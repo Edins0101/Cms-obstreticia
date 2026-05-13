@@ -43,7 +43,8 @@ export class CatalogsService {
       name: data.name,
       slug: data.slug,
       description: data.description,
-      isPublicVisible: data.visibility === 'public'
+      isPublicVisible: data.visibility === 'public',
+      imageUrl: data.imageUrl ?? null
     };
 
     const temp: Catalog = {
@@ -69,6 +70,7 @@ export class CatalogsService {
       name: data.name ?? current.name,
       slug: data.slug ?? current.slug,
       description: data.description ?? current.description,
+      imageUrl: data.imageUrl ?? null,
       isPublicVisible: (data.visibility ?? current.visibility) === 'public'
     };
 
@@ -142,7 +144,8 @@ export class CatalogsService {
       visibility: cat.isPublicVisible ? 'public' : 'private',
       theme: 'blue',
       itemLabel: 'Artículo',
-      items: [],
+      items: Array(cat.articleCount ?? 0).fill({}),
+      imageUrl: cat.imageUrl ?? undefined,
       createdAt: new Date(),
       updatedAt: new Date()
     };

@@ -1,6 +1,6 @@
 import { Article } from './article.model';
 
-export type BlockType = 'hero' | 'text' | 'image' | 'cards-grid' | 'cta' | 'gallery-grid';
+export type BlockType = 'hero' | 'text' | 'image' | 'cards-grid' | 'cta' | 'gallery-grid' | 'video';
 
 export interface BaseBlock {
   id: string;
@@ -76,6 +76,16 @@ export interface CtaBlock extends BaseBlock {
   };
 }
 
+// ── Video ─────────────────────────────────────
+export interface VideoBlock extends BaseBlock {
+  type: 'video';
+  data: {
+    url: string;
+    title?: string;
+  };
+}
+
+// ── Gallery ───────────────────────────────────
 export interface GalleryBlock extends BaseBlock {
   type: 'gallery-grid';
   data: {
@@ -91,7 +101,8 @@ export type PageBlock =
   | ImageBlock
   | CardsGridBlock
   | CtaBlock
-  | GalleryBlock;
+  | GalleryBlock
+  | VideoBlock;
 
 export interface Block {
   id: string;
@@ -102,7 +113,8 @@ export interface Block {
     | GalleryBlockData
     | TextBlockData
     | ImageBlockData
-    | CtaBlockData;
+    | CtaBlockData
+    | VideoBlockData;
 }
 
 export interface HeroBlockData {
@@ -142,4 +154,9 @@ export interface CtaBlockData {
   description: string;
   buttonText: string;
   buttonUrl: string;
+}
+
+export interface VideoBlockData {
+  url: string;
+  title?: string;
 }
