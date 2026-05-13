@@ -22,7 +22,7 @@ body {
 }
 
 /* =========================================
-   Variables globales
+  Variables globales
    ========================================= */
 :root {
   --color-primary:       #1e5fa8;
@@ -45,7 +45,11 @@ body {
   --error-container-color: rgba(176, 0, 32, .7);
   --error-container-secondary-color: rgba(176, 0, 32, 1);
   --error-accent-color: var(--color-danger);
+  --error-accent-color: var(--color-danger);
   --error-text-color: #f5f5f5cc;
+  --warning-container-color: rgba(98, 66, 14, .7);
+  --warning-container-secondary-color: rgba(196, 132, 29, .8);
+  --warning-accent-color: #F9C97C;
   --warning-container-color: rgba(98, 66, 14, .7);
   --warning-container-secondary-color: rgba(196, 132, 29, .8);
   --warning-accent-color: #F9C97C;
@@ -66,6 +70,10 @@ body {
   --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
   --shadow-md: 0 4px 12px rgba(0,0,0,.10);
   --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+
+  --filter-logo-hover: drop-shadow( 0px 0px 2px rgb( 241 227 125 / 70% ) );
+  --filter-logo-transition-out: filter .15s ease .03s, opacity .15s ease .03s;
+  --filter-logo-transition-in: filter .15s ease, opacity .15s ease;
 
   --sidebar-width: 256px;
   --header-height: 64px;
@@ -117,6 +125,8 @@ mat-icon {
   font-family: 'Material Symbols Rounded';
   font-size: var(--font-size-line-height);
   line-height: var(--font-size-line-height);
+  font-size: var(--font-size-line-height);
+  line-height: var(--font-size-line-height);
 }
 
 .custom-snackbar-icon-success, .custom-snackbar-icon-warning {
@@ -126,11 +136,13 @@ mat-icon {
 .custom-snackbar-icon-success {
   @include mat.icon-overrides((
     color: var(--color-success)
+    color: var(--color-success)
   ));
 }
 
 .custom-snackbar-icon-error {
   @include mat.icon-overrides((
+    color: var(--color-danger)
     color: var(--color-danger)
   ));
   font-size: 32px;
@@ -138,6 +150,7 @@ mat-icon {
 
 .custom-snackbar-icon-warning {
   @include mat.icon-overrides((
+    color: var(--color-warning)
     color: var(--color-warning)
   ));
 }

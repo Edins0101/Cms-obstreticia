@@ -18,6 +18,25 @@
   font-size: 15px;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--filter-logo-transition-out);
+
+  img { /* Imagen del Logo */
+    opacity: .95;
+  }
+
+  &:hover{
+    opacity: 1;
+    filter: var(--filter-logo-hover);
+    transition: var(--filter-logo-transition-in);
+
+    img {
+      opacity: 1;
+    }
+  }
 }
 
 /* TOGGLE (hidden desktop) */
