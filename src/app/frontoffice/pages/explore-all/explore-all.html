@@ -12,30 +12,30 @@
 
   <section class="toolbar">
     <div class="search-box">
-      <input 
-        type="text" 
-        placeholder="Filtrar por título..." 
-        [ngModel]="searchQuery()" 
+      <input
+        type="text"
+        placeholder="Filtrar por título..."
+        [ngModel]="searchQuery()"
         (ngModelChange)="updateSearch($event)">
     </div>
 
     <div class="filter-group">
       <div class="select-wrapper">
         <label for="cat-select">Categoría:</label>
-        <select 
-          id="cat-select" 
+        <select
+          id="cat-select"
           [value]="selectedCategory()"
           (change)="setCategory($any($event.target).value)">
-          @for (cat of categories; track cat) {
-            <option [value]="cat">{{ cat }}</option>
+          @for (cat of categories; track cat.slug) {
+            <option [value]="cat.slug">{{ cat.label }}</option>
           }
         </select>
       </div>
 
       <div class="select-wrapper">
         <label for="fecha-select">Ordenar:</label>
-        <select 
-          id="fecha-select" 
+        <select
+          id="fecha-select"
           [value]="selectedDateFilter()"
           (change)="setDateFilter($any($event.target).value)">
           <option value="todas">Por defecto</option>

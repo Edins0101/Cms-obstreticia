@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { CmsService } from '../../core/services/cms.service';
@@ -13,14 +13,12 @@ import { ArticleCardComponent } from '../../shared/components/article-card/artic
   styleUrls: ['./category.component.scss'],
 })
 export class CategoryComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private cms = inject(CmsService);
+
   articles = signal<Article[]>([]);
   categoryName = signal('');
   loading = signal(true);
-
-  constructor(
-    private route: ActivatedRoute,
-    private cms: CmsService,
-  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

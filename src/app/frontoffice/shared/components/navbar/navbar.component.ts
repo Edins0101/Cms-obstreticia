@@ -1,13 +1,14 @@
-import { Component, signal, inject, ElementRef, HostListener } from '@angular/core';
+import { Component, signal, inject, OnInit, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { ArticleCategory } from '../../../core/models/article.model';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
-interface NavLink {
-  label: string;
-  category: ArticleCategory | 'todos';
-  route: string;
+interface NavCategory {
+  categoryId: number;
+  name: string;
+  slug: string;
 }
 
 @Component({
@@ -17,21 +18,29 @@ interface NavLink {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   private router = inject(Router);
+  private http = inject(HttpClient);
   private elementRef = inject(ElementRef);
 
   activeCategory = signal<string>('todos');
   searchQuery = '';
   menuOpen = false;
+  navLinks = signal<{ label: string; slug: string; route: string }[]>([]);
 
-  navLinks: NavLink[] = [
-    { label: 'Investigación', category: 'investigacion', route: '/categoria/investigacion' },
-    { label: 'Tecnología', category: 'tecnologia', route: '/categoria/tecnologia' },
-    { label: 'Cultura', category: 'cultura', route: '/categoria/cultura' },
-    { label: 'Eventos', category: 'eventos', route: '/categoria/eventos' },
-    { label: 'Proyectos', category: 'proyectos', route: '/categoria/proyectos' },
-  ];
+  ngOnInit(): void {
+    this.http
+      .get<NavCategory[]>(`${environment.apiUrl}/Categories`)
+      .subscribe(categories => {
+        this.navLinks.set(
+          categories.map(c => ({
+            label: c.name,
+            slug: c.slug,
+            route: `/categoria/${c.slug}`,
+          }))
+        );
+      });
+  }
 
   setActive(category: string): void {
     this.activeCategory.set(category);
@@ -43,13 +52,8 @@ export class NavbarComponent {
 
   perfomSearch(): void {
     const query = this.searchQuery.trim();
-
     if (!query) return;
-
-    this.router.navigate(['/explorar'], {
-      queryParams: { q: query },
-    });
-
+    this.router.navigate(['/explorar'], { queryParams: { q: query } });
     this.menuOpen = false;
   }
 

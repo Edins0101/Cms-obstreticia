@@ -1,9 +1,11 @@
 <div class="register-form" [formGroup]="form">
   <div class="form-header">
-    <div class="logo-icon">🎓</div>
+    <img src="/images/logo-ug.png" alt="Universidad de Guayaquil" class="logo-ug" />
+    <span class="logo-divider">×</span>
+    <img src="/images/logo-alianza.png" alt="Misión Alianza" class="logo-alianza" />
     <div class="form-header-text">
       <strong>Universidad de Guayaquil</strong>
-      <span>WIKI VISUAL · CMS</span>
+      <span>EN ALIANZA CON MISIÓN ALIANZA</span>
     </div>
   </div>
 
@@ -33,20 +35,52 @@
   <!-- EDAD (OBLIGATORIO) -->
   <div class="field" [class.invalid]="isInvalid('edad')">
     <label>Edad</label>
-    <input type="number" formControlName="edad" placeholder="Tu edad" min="1" />
-    <span class="field-error" *ngIf="isInvalid('edad')"> Ingresa una edad válida </span>
+    <input
+      type="text"
+      formControlName="edad"
+      placeholder="Tu edad"
+      (keypress)="soloNumeros($event)"
+      maxlength="3"
+      inputmode="numeric"
+    />
+    <span class="field-error" *ngIf="isInvalid('edad')">Ingresa una edad válida</span>
   </div>
 
   <!-- SEXO (OBLIGATORIO) -->
   <div class="field" [class.invalid]="isInvalid('sexo')">
     <label>Sexo</label>
-    <select formControlName="sexo">
-      <option value="" disabled>Seleccionar...</option>
-      <option value="masculino">Masculino</option>
-      <option value="femenino">Femenino</option>
-      <option value="otro">Otro</option>
-    </select>
-    <span class="field-error" *ngIf="isInvalid('sexo')"> Selecciona una opción </span>
+    <div class="sexo-options">
+      <!-- Femenino -->
+      <button
+        type="button"
+        class="sexo-btn"
+        [class.sexo-btn--active-femenino]="form.get('sexo')?.value === 'femenino'"
+        (click)="form.get('sexo')?.setValue('femenino')"
+      >
+        Femenino
+      </button>
+
+      <!-- Masculino -->
+      <button
+        type="button"
+        class="sexo-btn"
+        [class.sexo-btn--active-masculino]="form.get('sexo')?.value === 'masculino'"
+        (click)="form.get('sexo')?.setValue('masculino')"
+      >
+        Masculino
+      </button>
+
+      <!-- Otro -->
+      <button
+        type="button"
+        class="sexo-btn"
+        [class.sexo-btn--active-otro]="form.get('sexo')?.value === 'otro'"
+        (click)="form.get('sexo')?.setValue('otro')"
+      >
+        Otro
+      </button>
+    </div>
+    <span class="field-error" *ngIf="isInvalid('sexo')">Selecciona una opción</span>
   </div>
 
   <button

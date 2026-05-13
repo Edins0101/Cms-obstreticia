@@ -1,7 +1,5 @@
-
 @if (!loading()) {
   <div class="home-content">
-    <!-- Bloques dinámicos del CMS -->
     @for (block of blocks(); track block.id) {
       <app-block-renderer [block]="block" />
     }

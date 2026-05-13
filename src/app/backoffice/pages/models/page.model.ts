@@ -8,6 +8,8 @@ export interface Page {
   slug: string;
   status: PageStatus;
   description?: string;
+  categoryId?: number | null | undefined;
+  featured?: boolean;
   blocks: PageBlock[];
   createdAt: Date;
   updatedAt: Date;
@@ -18,4 +20,6 @@ export interface PageFormData {
   slug: string;
   status: PageStatus;
   description?: string;
+  categoryId?: number | null | undefined;
+    featured?: boolean;  // ← agregar esto
 }

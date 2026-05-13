@@ -34,16 +34,11 @@
   </article>
 
   <article class="metric-card metric-card--sand">
-    <span class="metric-card__label">Ítems registrados</span>
+    <span class="metric-card__label">Artículos vinculados</span>
     <strong class="metric-card__value">{{ metrics().totalItems }}</strong>
     <span class="metric-card__hint">Entradas totales en catálogos</span>
   </article>
 
-  <article class="metric-card metric-card--rose">
-    <span class="metric-card__label">Ítems destacados</span>
-    <strong class="metric-card__value">{{ metrics().featuredItems }}</strong>
-    <span class="metric-card__hint">Contenido priorizado</span>
-  </article>
 </section>
 
 <div class="toolbar">
@@ -113,8 +108,7 @@
             <th>Catálogo</th>
             <th>Estado</th>
             <th>Visibilidad</th>
-            <th>Ítems</th>
-            <th>Destacados</th>
+
             <th>Actualizado</th>
             <th class="table__th--actions">Acciones</th>
           </tr>
@@ -145,12 +139,7 @@
                   {{ visibilityLabel(catalog.visibility) }}
                 </span>
               </td>
-              <td>
-                <strong class="table-number">{{ catalog.items.length }}</strong>
-              </td>
-              <td>
-                <strong class="table-number">{{ featuredItems(catalog) }}</strong>
-              </td>
+
               <td class="table__date">{{ catalog.updatedAt | date:'dd/MM/yyyy' }}</td>
               <td class="table__actions">
                 <div class="actions">

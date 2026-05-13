@@ -1,12 +1,17 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
-
+import { QuillModule } from 'ngx-quill';
+import { FormsModule } from '@angular/forms';
 import { PagesService } from '../services/pages.service';
 import { PageBlock, BlockType } from '../../../frontoffice/core/models/block.model';
 import { TextBlockComponent } from '../../../frontoffice/blocks/text-block/text-block.component';
 import { ImageBlockComponent } from '../../../frontoffice/blocks/image-block/image-block.component';
 import { CtaBlockComponent } from '../../../frontoffice/blocks/cta-block/cta-block.component';
+import { ImagePickerComponent } from '../../shared/components/image-picker/image-picker.component';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+
 
 type Device = 'desktop' | 'tablet' | 'mobile';
 
@@ -24,6 +29,9 @@ interface BlockPaletteItem {
     TextBlockComponent,
     ImageBlockComponent,
     CtaBlockComponent,
+    QuillModule,
+    FormsModule,
+    ImagePickerComponent,
   ],
   templateUrl: './page-builder.component.html',
   styleUrl: './page-builder.component.scss',
@@ -32,6 +40,15 @@ export class PageBuilderComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private service = inject(PagesService);
+  showImagePicker = signal(false);
+  imagePickerTarget = signal<'backgroundImage' | 'src' | null>(null);
+  private http = inject(HttpClient);
+  private api = environment.apiUrl;
+
+  openImagePicker(target: 'backgroundImage' | 'src'): void {
+  this.imagePickerTarget.set(target);
+  this.showImagePicker.set(true);
+}
 
   pageId = signal<string>('');
   pageTitle = signal('');
@@ -44,35 +61,75 @@ export class PageBuilderComponent implements OnInit {
 
   selectedBlock = computed(() => this.blocks().find((b) => b.id === this.selectedId()) ?? null);
 
+  quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ header: [1, 2, 3, false] }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: [] }],
+      ['link'],
+      ['clean']
+    ]
+  };
+
+  onImageSelected(url: string): void {
+    const target = this.imagePickerTarget();
+    if (target) this.updateProp(target, url);
+    this.showImagePicker.set(false);
+    this.imagePickerTarget.set(null);
+  }
+
   palette: BlockPaletteItem[] = [
     { type: 'hero', label: 'Hero', icon: 'hero' },
     { type: 'text', label: 'Texto', icon: 'text' },
     { type: 'image', label: 'Imagen', icon: 'image' },
     { type: 'cards-grid', label: 'Tarjetas', icon: 'cards' },
     { type: 'cta', label: 'Call to Action', icon: 'cta' },
+    { type: 'video', label: 'Video YouTube', icon: 'video' },
   ];
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.pageId.set(id);
+
+    // Intentar cargar inmediatamente
     const page = this.service.getById(id)();
-    if (!page) {
-      this.router.navigate(['/admin/pages']);
+
+    if (page && page.blocks.length > 0) {
+      this.pageTitle.set(page.title);
+      this.blocks.set([...page.blocks].sort((a, b) => a.order - b.order));
       return;
     }
-    this.pageTitle.set(page.title);
-    this.blocks.set([...page.blocks].sort((a, b) => a.order - b.order));
-  }
 
-  // ── Drag & Drop ───────────────────────────────────────────────
+    // Si no hay datos aún, cargar directamente desde el backend
+    this.http
+      .get<any>(`${this.api}/Articles/admin/${id}`)
+      .subscribe(article => {
+        if (!article) {
+          this.router.navigate(['/admin/pages']);
+          return;
+        }
+
+        this.pageTitle.set(article.title);
+
+        let blocks: any[] = [];
+        if (article.blocksJson) {
+          try {
+            blocks = JSON.parse(article.blocksJson);
+          } catch {
+            blocks = [];
+          }
+        }
+
+        this.blocks.set(blocks.sort((a: any, b: any) => a.order - b.order));
+      });
+  }
 
   onDrop(event: CdkDragDrop<PageBlock[]>): void {
     const arr = [...this.blocks()];
     moveItemInArray(arr, event.previousIndex, event.currentIndex);
     this.blocks.set(arr.map((b, i) => ({ ...b, order: i + 1 })));
   }
-
-  // ── Selección ─────────────────────────────────────────────────
 
   selectBlock(id: string): void {
     this.selectedId.set(this.selectedId() === id ? null : id);
@@ -82,14 +139,11 @@ export class PageBuilderComponent implements OnInit {
     this.selectedId.set(null);
   }
 
-  // ── Añadir / Eliminar ─────────────────────────────────────────
-
   addBlock(type: BlockType): void {
     const id = `block-${Date.now()}`;
     const block = this.buildDefault(id, type);
     this.blocks.update((b) => [...b, block]);
     this.selectedId.set(id);
-    // scroll al final del canvas
     setTimeout(() => {
       document.querySelector('.builder-canvas__end')?.scrollIntoView({ behavior: 'smooth' });
     }, 50);
@@ -122,8 +176,6 @@ export class PageBuilderComponent implements OnInit {
     this.blocks.update((arr) => arr.map((b) => (b.id === id ? { ...b, visible: !b.visible } : b)));
   }
 
-  // ── Propiedades ───────────────────────────────────────────────
-
   updateProp(key: string, value: unknown): void {
     const id = this.selectedId();
     if (!id) return;
@@ -132,7 +184,9 @@ export class PageBuilderComponent implements OnInit {
     );
   }
 
-  // ── Guardar ───────────────────────────────────────────────────
+  onQuillChange(html: string): void {
+    this.updateProp('html', html);
+  }
 
   save(): void {
     this.saving.set(true);
@@ -143,8 +197,6 @@ export class PageBuilderComponent implements OnInit {
       setTimeout(() => this.saved.set(false), 2000);
     }, 600);
   }
-
-  // ── Helpers ───────────────────────────────────────────────────
 
   blockLabel(type: BlockType): string {
     return this.palette.find((p) => p.type === type)?.label ?? type;
@@ -163,10 +215,7 @@ export class PageBuilderComponent implements OnInit {
     switch (type) {
       case 'hero':
         return {
-          id,
-          type,
-          visible: true,
-          order,
+          id, type, visible: true, order,
           data: {
             title: 'Nuevo Hero',
             subtitle: 'Agrega un subtítulo aquí',
@@ -177,10 +226,7 @@ export class PageBuilderComponent implements OnInit {
         };
       case 'text':
         return {
-          id,
-          type,
-          visible: true,
-          order,
+          id, type, visible: true, order,
           data: {
             title: 'Título de sección',
             html: '<p>Escribe tu contenido aquí...</p>',
@@ -189,10 +235,7 @@ export class PageBuilderComponent implements OnInit {
         };
       case 'image':
         return {
-          id,
-          type,
-          visible: true,
-          order,
+          id, type, visible: true, order,
           data: {
             src: 'https://placehold.co/1200x400',
             alt: 'Imagen',
@@ -202,10 +245,7 @@ export class PageBuilderComponent implements OnInit {
         };
       case 'cards-grid':
         return {
-          id,
-          type,
-          visible: true,
-          order,
+          id, type, visible: true, order,
           data: {
             title: 'Nuestros servicios',
             subtitle: '',
@@ -219,16 +259,21 @@ export class PageBuilderComponent implements OnInit {
         };
       case 'cta':
         return {
-          id,
-          type,
-          visible: true,
-          order,
+          id, type, visible: true, order,
           data: {
             title: '¿Listo para comenzar?',
             description: 'Contáctanos hoy.',
             primaryLabel: 'Contactar',
             primaryRoute: '/contacto',
             variant: 'primary',
+          },
+        };
+      case 'video':
+        return {
+          id, type, visible: true, order,
+          data: {
+            url: '',
+            title: '',
           },
         };
       default:

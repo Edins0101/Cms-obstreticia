@@ -26,11 +26,18 @@ export class ExploreAllComponent {
 
   allArticles = toSignal(this.cmsService.getArticles(), { initialValue: [] });
 
-  selectedCategory = signal('Todos');
+  selectedCategory = signal('todos');
   selectedDateFilter = signal('todas');
   searchQuery = signal('');
 
-  categories = ['Todos', 'Investigación', 'Tecnología', 'Cultura', 'Eventos', 'Proyectos'];
+  categories = [
+    { label: 'Todos',        slug: 'todos' },
+    { label: 'Investigación', slug: 'investigacion' },
+    { label: 'Tecnología',   slug: 'tecnologia' },
+    { label: 'Cultura',      slug: 'cultura' },
+    { label: 'Eventos',      slug: 'eventos' },
+    { label: 'Proyectos',    slug: 'proyectos' },
+  ];
 
   normalize(text: string): string {
     return text
@@ -45,30 +52,19 @@ export class ExploreAllComponent {
     const query = this.searchQuery().trim().toLowerCase();
     if (query) {
       const normalizedQuery = this.normalize(query);
-
       filtered = filtered.filter((a) => {
         const title = this.normalize(a.title);
-
         if (title.includes(normalizedQuery)) return true;
-
         const words = normalizedQuery.split(' ');
         return words.some((word) => title.includes(word));
       });
     }
 
     const cat = this.selectedCategory();
-    if (cat !== 'Todos') {
-      filtered = filtered.filter((a) => {
-        // Normalizamos para ignorar tildes y mayúsculas
-        const articleCat = a.category
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '');
-        const targetCat = cat
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '');
-        return articleCat === targetCat;
+    if (cat !== 'todos') {
+      filtered = filtered.filter(a => {
+        if (!a.category) return false;
+        return a.category === cat;
       });
     }
 
